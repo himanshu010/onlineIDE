@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Raleway:wght@600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
+    <title>OnlineIDE</title>
+</head>
+
+<body class="body">
+    <form action="" method="post" id="getOutput">
+        <section class="options">
+            <div class="opContainer">
+                <div class="heading">OnlineIDE<br>
+                    <a href="https://himanshuaswal.codes" target="_blank">
+                        <span class="signature">
+                            by Himanshu Aswal
+                        </span>
+                    </a>
+                </div>
+                <div>
+                    <select class="options_selection" name="select-language" id="language">
+                        <option value="cpp17">C++ 17</option>
+                        <option value="cpp">C++</option>
+                        <option value="cpp14">C++ 14</option>
+                        <option value="python2">Python2</option>
+                        <option value="python3">Python3</option>
+                        <option value="php">PHP</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="java">Java</option>
+                        <option value="c">C</option>
+                    </select>
+                    <select class="options_selection" name="select-theme" id="theme">
+                        <option value="monokai">Monokai</option>
+                        <option value="dawn">Dawn</option>
+                        <option value="github">GitHub</option>
+                        <option value="solarizedlight">Solarized Light</option>
+                        <option value="sql_server">SQL Server</option>
+                        <option value="ambiance">Ambiance</option>
+                        <option value="chaos">Chaos</option>
+                        <option value="gruvbox">Gruvbox</option>
+                        <option value="solarized_dark">Solarized Dark</option>
+                        <option value="terminal">Terminal</option>
+                    </select>
+                    <button id="button" type="submit"></button>
+                </div>
+            </div>
+        </section>
+    </form>
+    <textarea style="display: none" name="description" id="getProgram" form="getOutput"></textarea>
+    <textarea style="display: none" id="getScript" name="getScript">{{this.description}}</textarea>
+    <textarea style="display: none" id="getLang" name="getLang">{{this.lang}}</textarea>
+    <textarea style="display: none" id="getTheme" name="getTheme">{{this.theme}}</textarea>
+    {{#if this.isError}}
+    <div class="msg" id="msg" style="background-color: red"> ⚠️ Error</div>
+    {{else if this.msg}}
+    <div class="msg" id="msg">{{this.msg}} <br />
+        CPU Time : {{this.time}} sec(s)<br />
+        Memory : {{this.memory}} kilobyte(s)</div>
+    {{/if}}
+    <div id="io">
+        <div class="input">
+            <div class="text">Input:</div>
+            <textarea id="input" name="input" form="getOutput">{{this.stdin}}</textarea>
+        </div>
+        <div class="output">
+            <div class="text">Output:</div>
+            <textarea id="output" name="output">{{this.stdout}}</textarea>
+        </div>
+    </div>
+    <div id="editor"></div>
+    {{!-- {{>footer}} --}}
+    <script type="text/javascript">
+        $('#msg').fadeOut(4000, function () {
+            $(this).remove();
+        });</script>
+
+</body>
+
+</html>
