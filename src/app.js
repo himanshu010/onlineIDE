@@ -1,15 +1,15 @@
 const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
-
 const hbs = require("hbs");
+const output = require("./utils/output");
+const getRepo = require("./utils/getRepo");
+const { type } = require("os");
 
 dotenv.config({ path: "./config/dev.env" });
 
 console.log(__dirname);
 console.log(path.join(__dirname, ".."));
-
-const output = require("./utils/output.js");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -68,6 +68,59 @@ app.post("", (req, res) => {
   );
 });
 
+app.get("/github", (req, res) => {
+  res.render("githubRepoCode");
+});
+app.get(/^\/github\/(.*)/, (req, res) => {
+  var structure = req.originalUrl.substring(7);
+  var arr = structure.split("/");
+  const username = arr[1];
+  const repo = arr[2];
+  structure = "";
+  for (var i = 3; i < arr.length; i++) {
+    structure = structure + arr[i] + "/";
+  }
+  console.log(username);
+  console.log("repo", repo);
+  console.log(structure);
+  console.log("https://api.github.com/repos" + structure);
+  getRepo(username, repo, structure, (error, result) => {
+    if (error) {
+      // return res.render("error", {
+      //   error: error.code,
+      //   errno: error.errno,
+      // });
+      // console.log
+      res.send(error);
+    }
+    // var content = JSON.parse(result.body);
+    var content = result.body;
+    content = JSON.parse(content);
+    if (content[0] !== undefined && typeof content === "object") {
+      // content = JSON.parse(content);
+
+      res.render("directory");
+    } else {
+      res.send(typeof content);
+    }
+  });
+});
+app.post("/github/*", (req, res) => {
+  var structure = req.originalUrl.substring(7);
+  console.log(structure);
+  console.log("https://api.github.com/repos" + structure);
+  getRepo(structure, (error, result) => {
+    if (error) {
+      // return res.render("error", {
+      //   error: error.code,
+      //   errno: error.errno,
+      // });
+      // console.log
+      res.send(error);
+    }
+    res.send(result);
+  });
+});
 
 app.get("*", (req, res) => {
   res.render("404");
