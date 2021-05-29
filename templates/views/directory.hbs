@@ -1,18 +1,65 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <ol>
-    {{#each data}}    
-        <li><a href={{this.url}}>{{this.name}}</a></li>
-    {{/each}}
-    </ol>
 
-    <script type="text/javascript" src="/js/directory.js"></script>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/directory.css" type="text/css" />
+    <title>{{curDir}}</title>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-text">
+        <div class="ht-main">GitHub's Compiler</div>
+        <div class="ht-sub">Compile directly from GitHub</div>
+        </div>
+    </div>
+    <div class="p-10 bg-surface-secondary">
+        <div class="userInfo">
+            <div><img class="dp" src={{profilePic}}></div>
+            <div class="ui-text">
+                <div class="username"><a href={{userLink}}>{{username}}</a></div>
+                <div class="repo"><a href={{repoLink}}>{{repo}}</a></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h6>{{structure}}</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-nowrap">
+                        <!-- <thead class="thead-light">
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Job Title</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Lead Score</th>
+                  <th scope="col">Company</th>
+                  <th></th>
+                </tr>
+            </thead> -->
+                        <tbody>
+                            {{#each data}}
+                            <tr>
+                                <td data-label="Job Title">
+                                    {{#if isDir}}
+                                    <img class="type" alt="dir" src="/css/folder.png" />
+                                    {{else}}
+                                    <img class="type" alt="file" src="/css/file.png" />
+                                    {{/if}}
+                                    <a href={{this.url}}>{{this.name}}</a>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

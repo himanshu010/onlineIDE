@@ -76,7 +76,9 @@ app.get("/github", (req, res) => {
 // app.get("/github/*", (req, res) => {
 //   res.render("index");
 // });
-
+function eventSorter(a, b) {
+  return a.isDir > b.isDir ? -1 : 1;
+}
 app.get("/github/*", async (req, res) => {
   var structure = req.originalUrl.substring(7);
   var arr = structure.split("/");
@@ -93,7 +95,7 @@ app.get("/github/*", async (req, res) => {
     (res.locals.requested_url =
       req.protocol +
       "://" +
-      req.host +
+      req.hostname +
       (port == 80 || port == 443 ? "" : ":" + port) +
       req.path) + "/";
 
@@ -103,10 +105,31 @@ app.get("/github/*", async (req, res) => {
     output[i].url = link + name;
   }
   for (var i = 0; i < output.length; i++) {
-    // console.log(output[i].url);
+    if (output[i].type === "dir") {
+      output[i].isDir = 1;
+    } else {
+      output[i].isDir = 0;
+    }
+  }
+
+  output.sort(eventSorter);
+  var curDir;
+  if (structure.length === 0) {
+    curDir = repo;
+  } else {
+    curDir = arr[arr.length - 1];
   }
   if (Object.prototype.toString.call(output) === "[object Array]") {
-    return res.render("directory", { data: output });
+    return res.render("directory", {
+      data: output,
+      structure: "./" + repo + "/" + structure,
+      curDir,
+      username,
+      repo,
+      profilePic: "https://github.com/" + username + ".png",
+      userLink: "https://github.com/" + username,
+      repoLink: "https://github.com/" + username + "/" + repo,
+    });
   } else {
     var code = await getCode(username, repo, structure);
     res.render("index", { description: code });

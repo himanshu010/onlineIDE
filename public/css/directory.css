@@ -1,0 +1,49 @@
+@import url(https://unpkg.com/@webpixels/css@1.0/dist/index.css);
+
+.bg-surface-secondary {
+  min-height: 100vh;
+}
+
+.type {
+  height: 25px;
+  width: 25px;
+  margin-right: 10px;
+}
+a {
+  color: black;
+}
+.header {
+  width: 100%;
+}
+
+.header-text {
+  margin: 10px;
+  margin-left: 40px;
+  width: auto;
+}
+
+.ht-main {
+  font-size: 30px;
+  font-weight: bolder;
+}
+
+.userInfo {
+  min-width: 100%;
+  display: inline-flex;
+  padding-left: 50px;
+  padding-bottom: 20px;
+}
+
+.dp {
+  height: 75px;
+  width: 75px;
+  border-radius: 100px;
+}
+
+.ui-text {
+  min-height: 100%;
+  padding: 10px;
+  padding-left: 20px;
+  font-size: 15px;
+  font-weight: bolder;
+}
