@@ -20,13 +20,14 @@
     <form action="" method="post" id="getOutput">
         <section class="options">
             <div class="opContainer">
-                <div class="heading">OnlineIDE<br>
+                <div class="heading">Online Ide<br>
                     <a href="https://himanshuaswal.codes" target="_blank">
                         <span class="signature">
                             by Himanshu Aswal
                         </span>
                     </a>
                 </div>
+                <div class="name">{{name}}</div>
                 <div>
                     <select class="options_selection" name="select-language" id="language">
                         <option value="cpp17">C++ 17</option>
@@ -40,15 +41,15 @@
                         <option value="c">C</option>
                     </select>
                     <select class="options_selection" name="select-theme" id="theme">
-                        <option value="monokai">Monokai</option>
-                        <option value="dawn">Dawn</option>
+                        <option value="solarized_dark">Solarized Dark</option>
+                        <option value="cobalt">cobalt</option>
                         <option value="github">GitHub</option>
                         <option value="solarizedlight">Solarized Light</option>
                         <option value="sql_server">SQL Server</option>
                         <option value="ambiance">Ambiance</option>
                         <option value="chaos">Chaos</option>
                         <option value="gruvbox">Gruvbox</option>
-                        <option value="solarized_dark">Solarized Dark</option>
+                        <option value="monokai">monokai</option>
                         <option value="terminal">Terminal</option>
                     </select>
                     <button id="button" type="submit"></button>
@@ -56,6 +57,15 @@
             </div>
         </section>
     </form>
+    {{#if name}}
+    <div class="userInfo">
+        <div><img class="dp" src={{profilePic}}></div>
+        <div class="ui-text">
+            <div class="username"><a href={{userLink}}>{{username}}</a></div>
+            <div class="repo"><a href={{repoLink}}>{{repo}}</a></div>
+        </div>
+    </div>
+    {{/if}}
     <textarea style="display: none" name="description" id="getProgram" form="getOutput"></textarea>
     <textarea style="display: none" id="getScript" name="getScript">{{this.description}}</textarea>
     <textarea style="display: none" id="getLang" name="getLang">{{this.lang}}</textarea>
@@ -68,16 +78,12 @@
         Memory : {{this.memory}} kilobyte(s)</div>
     {{/if}}
     <div id="io">
-        <div class="input">
-            <div class="text">Input:</div>
-            <textarea id="input" name="input" form="getOutput">{{this.stdin}}</textarea>
-        </div>
-        <div class="output">
-            <div class="text">Output:</div>
-            <textarea id="output" name="output">{{this.stdout}}</textarea>
-        </div>
+        <textarea placeholder="Input Text Here..." id="input" name="input" form="getOutput">{{this.stdin}}</textarea>
+        <textarea placeholder="Output will be shown here..." id="output" name="output">{{this.stdout}}</textarea>
     </div>
-    <div id="editor"></div>
+    {{!-- <div id="container"> --}}
+        <div id="editor"></div>
+    {{!-- </div> --}}
     {{!-- {{>footer}} --}}
     <script type="text/javascript">
         $('#msg').fadeOut(4000, function () {

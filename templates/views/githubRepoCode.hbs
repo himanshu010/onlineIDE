@@ -1,25 +1,166 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <form onsubmit="get_action(this);" method="post" id="getOutput">
-      <input
-        type="text"
-        id="username"
-        name="username"
-        placeholder="username"
-      /><br />
-      <input type="text" id="repo" name="repo" placeholder="repo" /><br /><br />
-      <input type="submit" value="Submit" />
-    </form>
-    <script type="text/javascript">
-      function get_action(form) { 
-        form.action = window.location.href+"/"+document.getElementById("username").value+"/"+document.getElementById("repo").value;
-        }
-    </script>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="Webpixels" />
+  <script type="text/javascript">
+    function get_action(form) {
+      form.action = window.location.href + "/" + document.getElementById("username").value + "/" + document.getElementById("repo").value;
+    }
+  </script>
+  <title>OneDayWarrior</title>
+  <link rel="icon" href="assets/images/logo.png" type="image/x-icon" />
+  <!-- Preloader -->
+  <script>
+    window.addEventListener("load", function () {
+      setTimeout(function () {
+        document.querySelector("body").classList.add("loaded");
+      }, 300);
+    });
+  </script>
+  <link rel="stylesheet" href="/css/githubRepoCode.css" id="stylesheet" />
+</head>
+
+<body>
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+    <div class="cont big-logo">
+      Github's Compiler
+    </div>
+  <section class="slice py-7">
+    <div class="container">
+      <div class="row row-grid align-items-center">
+        <div class="col-12 col-md-5 col-lg-6 order-md-2 text-center">
+          <figure class="w-100">
+            <img alt="Image placeholder" src="/css/happy.gif" class="img-fluid mw-md-120" border-radius="10px !important" />
+          </figure>
+        </div>
+        <div class="col-12 col-md-7 col-lg-6 order-md-1 pr-md-5">
+          <h1 class="display-4 text-center text-md-left mb-3">
+            Get your unique repository url which you can use to test, debug, and compile all your code online using
+            <strong class="text-primary">GitHub's Compiler</strong>
+          </h1>
+          <p class="lead text-center text-md-left text-muted">
+            Say goodBye to all those copy/pasting.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <div class="container d-flex flex-column">
+        <div class="row align-items-center justify-content-center min-vh-100">
+          <div class="col-md-6 col-lg-5 col-xl-5 py-6 py-md-0">
+            <div class="card shadow zindex-100 mb-0">
+              <div class="card-body px-md-5 py-5">
+                <div class="mb-5">
+                  <h6 class="h3">Get Started</h6>
+                </div>
+                <span class="clearfix"></span>
+                <form onsubmit="get_action(this);" id="getOutput" method="post">
+                  <div class="form-group">
+                    <label class="form-control-label">Username</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          ><i data-feather="user"></i
+                        ></span>
+                      </div>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="username"
+                        placeholder="Username"
+                        name="username"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Repository</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          ><i data-feather="code"></i
+                        ></span>
+                      </div>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="repo"
+                        placeholder="Repository"
+                        name="repo"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <button type="submit" class="btn btn-block btn-primary">
+                      Continue
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <footer class="position-relative" id="footer-main">
+    <div class="footer pt-lg-7 footer-dark bg-dark">
+      <!-- SVG shape -->
+      <div class="shape-container shape-line shape-position-top shape-orientation-inverse">
+        <svg width="2560px" height="100px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          preserveAspectRatio="none" x="0px" y="0px" viewBox="0 0 2560 100" style="enable-background: new 0 0 2560 100"
+          xml:space="preserve" class="fill-section-secondary">
+          <polygon points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+      <!-- Footer -->
+      <div class="container pt-4">
+        <div class="row">
+          <div class="col-lg-4 mb-5 mb-lg-0">
+              <div class="big-logo">GitHub's Compiler</div>
+            <p class="mt-4 text-sm opacity-8 pr-lg-4">
+              Github's Compiler attempts to introduce you to a new way of checking, running and debbuging code without
+              copy/pasting it on different sites.</br> We also helps you to share or broadcast your code to other as the
+              url which we provide you can be shared to gain access.
+            </p>
+          </div>
+        </div>
+        <hr class="divider divider-fade divider-dark my-4" />
+        <div class="row align-items-center justify-content-md-between pb-4">
+          <div class="col-md-6">
+            <div class="copyright text-sm font-weight-bold text-center text-md-left">
+              &copy; 2021
+              <a href="/" class="font-weight-bold" target="_blank">Github's Compiler</a>.
+              All rights reserved
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/githubRepoCode.js"></script>
+  <!-- Feather Icons -->
+  <script>
+    feather.replace({
+      width: "1em",
+      height: "1em",
+    });
+  </script>
+</body>
+
 </html>

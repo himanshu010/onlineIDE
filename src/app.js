@@ -5,6 +5,7 @@ const hbs = require("hbs");
 const output = require("./utils/output");
 const getRepo = require("./utils/getRepo");
 const getCode = require("./utils/getCode");
+const getLang = require("./utils/getLang");
 const { type } = require("os");
 
 dotenv.config({ path: "./config/dev.env" });
@@ -54,6 +55,7 @@ app.post("", (req, res) => {
         isError = true;
       }
       console.log(result);
+      console.log(req.body.description);
       res.render("index", {
         description: req.body.description,
         theme: req.body["select-theme"],
@@ -135,31 +137,101 @@ app.get("/github/*", async (req, res) => {
     });
   } else {
     try {
+      var ext = output.name.split(".")[1];
       var code = await getCode(username, repo, structure);
       console.log(code);
-      res.render("index", { description: code });
+      res.render("index", {
+        theme: "solarized_dark",
+        description: code,
+        lang: getLang(ext),
+        profilePic: "https://github.com/" + username + ".png",
+        userLink: "https://github.com/" + username,
+        repoLink: "https://github.com/" + username + "/" + repo,
+        name: "./" + repo + "/" + structure,
+        username,
+        repo,
+      });
     } catch (err) {
       console.log(err);
     }
   }
 });
 
-// app.post("/github/*", (req, res) => {
-//   // var structure = req.originalUrl.substring(7);
-//   console.log("yyyyyyyyyy");
-//   // console.log("https://api.github.com/repos" + structure);
-//   // getRepo(structure, (error, result) => {
-//   //   if (error) {
-//   //     // return res.render("error", {
-//   //     //   error: error.code,
-//   //     //   errno: error.errno,
-//   //     // });
-//   //     // console.log
-//   //     res.send(error);
-//   //   }
-//   //   res.send(result);
-//   // });
-// });
+app.post("/github/*", async (req, res) => {
+  var structure = req.originalUrl.substring(7);
+  var arr = structure.split("/");
+  const username = arr[1];
+  const repo = arr[2];
+  structure = "";
+  for (var i = 3; i < arr.length; i++) {
+    structure = structure + arr[i] + "/";
+  }
+
+  var output = await getRepo(username, repo, structure);
+
+  var link = (res.locals.requested_url =
+    req.protocol +
+    "://" +
+    req.hostname +
+    (port != 3000 ? "" : ":" + port) +
+    req.path);
+
+  if (link[link.length - 1] != "/") {
+    link = link + "/";
+  }
+
+  for (var i = 0; i < output.length; i++) {
+    var splitArr = output[i].url.split("/");
+    var name = splitArr[splitArr.length - 1].split("?")[0];
+    output[i].url = link + name;
+  }
+  for (var i = 0; i < output.length; i++) {
+    if (output[i].type === "dir") {
+      output[i].isDir = 1;
+    } else {
+      output[i].isDir = 0;
+    }
+  }
+
+  var curDir;
+  if (structure.length === 0) {
+    curDir = repo;
+  } else {
+    curDir = arr[arr.length - 1];
+  }
+  if (Object.prototype.toString.call(output) === "[object Array]") {
+    output.sort(eventSorter);
+    return res.render("directory", {
+      data: output,
+      structure: "./" + repo + "/" + structure,
+      curDir,
+      username,
+      repo,
+      profilePic: "https://github.com/" + username + ".png",
+      userLink: "https://github.com/" + username,
+      repoLink: "https://github.com/" + username + "/" + repo,
+    });
+  } else {
+    try {
+      var ext = output.name.split(".")[1];
+      var code = await getCode(username, repo, structure);
+      console.log(code);
+      res.render("index", {
+        theme: "solarized_dark",
+        description: code,
+        lang: getLang(ext),
+        profilePic: "https://github.com/" + username + ".png",
+        userLink: "https://github.com/" + username,
+        repoLink: "https://github.com/" + username + "/" + repo,
+        name: "./" + repo + "/" + structure,
+        username,
+        repo,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+});
 
 app.get("*", (req, res) => {
   res.render("404");

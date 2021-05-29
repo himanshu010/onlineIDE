@@ -10,9 +10,22 @@
   font-weight: normal;
   font-style: normal;
 }
-body {
-  height: 100vh;
+@font-face {
+  font-family: "product_sansbold";
+  src: url("product_sans_bold_700-webfont.woff2") format("woff2"),
+    url("product_sans_bold_700-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
+
+@font-face {
+  font-family: "product_sansregular";
+  src: url("product_sans_400-webfont.woff2") format("woff2"),
+    url("product_sans_400-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .msg {
   font-family: "Raleway", sans-serif;
   font-size: 12px;
@@ -40,18 +53,42 @@ body {
   font-family: "BeautifulBloom-Alt";
   font-size: 25px;
   padding-left: 5px;
-  color: #4db8e2;
+  color: #35b7ff;
 }
 a {
   text-decoration: none !important;
 }
+
+#container,
+#io,
+.body {
+  background-color: #111111;
+}
+.name {
+  font-size: 15px;
+  color: white;
+  font-family: "product_sansregular";
+}
 #editor {
+  /* width: 80% !important; */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 60vw;
+  max-width: 80vw;
+  min-height: 80vh;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 15px;
+  border-radius: 5px;
+}
+/* #editor {
   width: 100%;
   height: 68%;
   float: left;
   letter-spacing: 1px;
-  font-size: 15px;
-}
+  
+} */
 #getOutput {
   height: 10%;
 }
@@ -62,8 +99,8 @@ a {
 }
 .heading {
   margin: 10px;
-  color: lightgrey;
-  font-family: "Montserrat", sans-serif;
+  color: #ffffff;
+  font-family: "product_sansbold", sans-serif;
   font-size: 25px;
 }
 .opContainer {
@@ -96,22 +133,6 @@ select::-ms-expand {
   display: none;
 }
 
-#io {
-  width: 100%;
-  display: inline-flex;
-  text-align: center;
-  height: 24%;
-  background-color: rgb(39, 37, 37);
-}
-.input,
-.output {
-  width: 50%;
-  border-top: 1px grey solid;
-  border-bottom: 1px grey solid;
-}
-.input {
-  border-right: 1px grey solid;
-}
 .text {
   min-height: 15%;
   font-size: 17px;
@@ -119,17 +140,28 @@ select::-ms-expand {
   font-family: "Raleway", sans-serif;
   color: lightgrey;
 }
+
+#io {
+  min-width: 100%;
+  max-width: 100%;
+  display: inline-flex;
+  justify-content: space-around;
+}
+
 #input,
 #output {
   outline: none;
-  width: 100%;
-  min-height: 85%;
+  min-height: 20vh;
+  width: 30%;
   resize: none;
   border: none;
-  border-top: 1px gray solid;
-  background-color: #272822;
-  color: lightgrey;
-  padding: 10px;
+  background-color: #3a3a3a;
+  color: white;
+  padding: 15px;
+  font-weight: 500;
+  font-size: 15px;
+  margin-top: 30px;
+  border-radius: 4px;
 }
 
 button {
@@ -139,8 +171,8 @@ button {
   width: 100px;
   border-radius: 40px;
   background: #fff;
-  border: 2px solid#4db8e2;
-  color: #4db8e2;
+  border: 2px solid#35b7ff;
+  color: #35b7ff;
   letter-spacing: 1px;
   text-shadow: 0;
   font-size: 12px !important;
@@ -151,7 +183,7 @@ button {
 
 button:hover {
   color: white;
-  background: #4db8e2;
+  background: #35b7ff;
 }
 
 button:active {
@@ -167,7 +199,7 @@ button:after {
   border-color: #bbbbbb;
   border-width: 3px;
   font-size: 0;
-  border-left-color: #4db8e2;
+  border-left-color: #35b7ff;
   animation: rotating 2s 0.25s linear infinite;
 }
 
@@ -176,14 +208,14 @@ button:after {
 }
 
 .onclic:hover {
-  color: #4db8e2;
+  color: #35b7ff;
   background: white;
 }
 
 .validate {
   font-size: 13px;
   color: white;
-  background: #4db8e2;
+  background: #35b7ff;
 }
 
 .validate:after {
@@ -213,6 +245,27 @@ button:after {
   font-family: "Raleway", sans-serif;
   padding: 10px;
 }
+.userInfo {
+  min-width: 100%;
+  display: inline-flex;
+  padding-left: 50px;
+  padding: 20px;
+}
+
+.dp {
+  height: 75px;
+  width: 75px;
+  border-radius: 100px;
+}
+
+.ui-text {
+  min-height: 100%;
+  padding: 10px;
+  padding-left: 20px;
+  font-size: 15px;
+  font-weight: bolder;
+}
+
 /* 
 @media (max-width: 767px) {
   #editor {
