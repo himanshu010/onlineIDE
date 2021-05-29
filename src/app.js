@@ -115,7 +115,6 @@ app.get("/github/*", async (req, res) => {
     }
   }
 
-  output.sort(eventSorter);
   var curDir;
   if (structure.length === 0) {
     curDir = repo;
@@ -123,6 +122,7 @@ app.get("/github/*", async (req, res) => {
     curDir = arr[arr.length - 1];
   }
   if (Object.prototype.toString.call(output) === "[object Array]") {
+    output.sort(eventSorter);
     return res.render("directory", {
       data: output,
       structure: "./" + repo + "/" + structure,
@@ -134,8 +134,13 @@ app.get("/github/*", async (req, res) => {
       repoLink: "https://github.com/" + username + "/" + repo,
     });
   } else {
-    var code = await getCode(username, repo, structure);
-    res.render("index", { description: code });
+    try {
+      var code = await getCode(username, repo, structure);
+      console.log(code);
+      res.render("index", { description: code });
+    } catch (err) {
+      console.log(err);
+    }
   }
 });
 
