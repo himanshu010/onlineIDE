@@ -98,6 +98,10 @@ app.get("/github/*", async (req, res) => {
     (port != 3000 ? "" : ":" + port) +
     req.path);
 
+  if (link[link.length - 1] != "/") {
+    link = link + "/";
+  }
+
   for (var i = 0; i < output.length; i++) {
     var splitArr = output[i].url.split("/");
     var name = splitArr[splitArr.length - 1].split("?")[0];
