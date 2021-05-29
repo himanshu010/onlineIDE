@@ -96,7 +96,7 @@ app.get("/github/*", async (req, res) => {
       req.protocol +
       "://" +
       req.hostname +
-      (port == 80 || port == 443 ? "" : ":" + port) +
+      (port == 80 || port == 26864 ? "" : ":" + port) +
       req.path) + "/";
 
   for (var i = 0; i < output.length; i++) {
