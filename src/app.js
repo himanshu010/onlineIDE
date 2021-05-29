@@ -91,13 +91,12 @@ app.get("/github/*", async (req, res) => {
 
   var output = await getRepo(username, repo, structure);
 
-  var link =
-    (res.locals.requested_url =
-      req.protocol +
-      "://" +
-      req.hostname +
-      (port == 80 || port == 26864 ? "" : ":" + port) +
-      req.path) + "/";
+  var link = (res.locals.requested_url =
+    req.protocol +
+    "://" +
+    req.hostname +
+    (port != 3000 ? "" : ":" + port) +
+    req.path);
 
   for (var i = 0; i < output.length; i++) {
     var splitArr = output[i].url.split("/");
