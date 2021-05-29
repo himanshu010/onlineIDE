@@ -22,7 +22,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env node src/app.js",
+    "start": "node src/app.js",
     "dev": "cross-env nodemon src/app.js -e hbs,js,css"
   },
   "author": "",
