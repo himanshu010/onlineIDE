@@ -7,6 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    this is directory
+    <ol>
+    {{#each data}}    
+        <li><a href={{this.url}}>{{this.name}}</a></li>
+    {{/each}}
+    </ol>
+
+    <script type="text/javascript" src="/js/directory.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 var request = require("postman-request");
 
-async function getRepo(username, repo, structure) {
+async function getCode(username, repo, structure) {
   const options = {
     url:
       "https://api.github.com/repos/" +
@@ -12,6 +12,7 @@ async function getRepo(username, repo, structure) {
       structure,
     method: "GET",
     headers: {
+      accept: "application/vnd.github.VERSION.raw",
       "User-Agent": "request",
     },
   };
@@ -23,11 +24,10 @@ async function getRepo(username, repo, structure) {
       if (err) {
         reject(err);
       } else {
-        body = JSON.parse(body);
         resolve(body);
       }
     });
   });
 }
 
-module.exports = getRepo;
+module.exports = getCode;

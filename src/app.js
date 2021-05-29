@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const hbs = require("hbs");
 const output = require("./utils/output");
 const getRepo = require("./utils/getRepo");
+const getCode = require("./utils/getCode");
 const { type } = require("os");
 
 dotenv.config({ path: "./config/dev.env" });
@@ -71,7 +72,12 @@ app.post("", (req, res) => {
 app.get("/github", (req, res) => {
   res.render("githubRepoCode");
 });
-app.get(/^\/github\/(.*)/, (req, res) => {
+
+// app.get("/github/*", (req, res) => {
+//   res.render("index");
+// });
+
+app.get("/github/*", async (req, res) => {
   var structure = req.originalUrl.substring(7);
   var arr = structure.split("/");
   const username = arr[1];
@@ -80,47 +86,49 @@ app.get(/^\/github\/(.*)/, (req, res) => {
   for (var i = 3; i < arr.length; i++) {
     structure = structure + arr[i] + "/";
   }
-  console.log(username);
-  console.log("repo", repo);
-  console.log(structure);
-  console.log("https://api.github.com/repos" + structure);
-  getRepo(username, repo, structure, (error, result) => {
-    if (error) {
-      // return res.render("error", {
-      //   error: error.code,
-      //   errno: error.errno,
-      // });
-      // console.log
-      res.send(error);
-    }
-    // var content = JSON.parse(result.body);
-    var content = result.body;
-    content = JSON.parse(content);
-    if (content[0] !== undefined && typeof content === "object") {
-      // content = JSON.parse(content);
 
-      res.render("directory");
-    } else {
-      res.send(typeof content);
-    }
-  });
+  var output = await getRepo(username, repo, structure);
+
+  var link =
+    (res.locals.requested_url =
+      req.protocol +
+      "://" +
+      req.host +
+      (port == 80 || port == 443 ? "" : ":" + port) +
+      req.path) + "/";
+
+  for (var i = 0; i < output.length; i++) {
+    var splitArr = output[i].url.split("/");
+    var name = splitArr[splitArr.length - 1].split("?")[0];
+    output[i].url = link + name;
+  }
+  for (var i = 0; i < output.length; i++) {
+    // console.log(output[i].url);
+  }
+  if (Object.prototype.toString.call(output) === "[object Array]") {
+    return res.render("directory", { data: output });
+  } else {
+    var code = await getCode(username, repo, structure);
+    res.render("index", { description: code });
+  }
 });
-app.post("/github/*", (req, res) => {
-  var structure = req.originalUrl.substring(7);
-  console.log(structure);
-  console.log("https://api.github.com/repos" + structure);
-  getRepo(structure, (error, result) => {
-    if (error) {
-      // return res.render("error", {
-      //   error: error.code,
-      //   errno: error.errno,
-      // });
-      // console.log
-      res.send(error);
-    }
-    res.send(result);
-  });
-});
+
+// app.post("/github/*", (req, res) => {
+//   // var structure = req.originalUrl.substring(7);
+//   console.log("yyyyyyyyyy");
+//   // console.log("https://api.github.com/repos" + structure);
+//   // getRepo(structure, (error, result) => {
+//   //   if (error) {
+//   //     // return res.render("error", {
+//   //     //   error: error.code,
+//   //     //   errno: error.errno,
+//   //     // });
+//   //     // console.log
+//   //     res.send(error);
+//   //   }
+//   //   res.send(result);
+//   // });
+// });
 
 app.get("*", (req, res) => {
   res.render("404");
