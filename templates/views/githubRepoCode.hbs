@@ -8,7 +8,11 @@
   <meta name="author" content="Webpixels" />
   <script type="text/javascript">
     function get_action(form) {
-      form.action = window.location.href + "/" + document.getElementById("username").value + "/" + document.getElementById("repo").value;
+      var url=window.location.href
+      if(url[url.length-1]==="/"){
+        url=url.slice(0,-1);
+      }
+      form.action = url + "/" + document.getElementById("username").value + "/" + document.getElementById("repo").value;
     }
   </script>
   <title>OneDayWarrior</title>
