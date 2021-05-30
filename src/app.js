@@ -39,6 +39,9 @@ app.get("", (req, res) => {
 
 app.post("", (req, res) => {
   console.log(req.body);
+  var parentURL =
+    req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
+  console.log(parentURL);
   output(
     req.body.description,
     req.body["select-language"],
@@ -66,6 +69,7 @@ app.post("", (req, res) => {
         time: result.body.cpuTime,
         memory: result.body.memory,
         isError,
+        parentURL: parentURL,
       });
     }
   );
@@ -92,13 +96,14 @@ app.get("/github/*", async (req, res) => {
   }
 
   var output = await getRepo(username, repo, structure);
-
-  var link = (res.locals.requested_url =
+  var parentURL =
+    req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
+  var link =
     req.protocol +
     "://" +
     req.hostname +
     (port != 3000 ? "" : ":" + port) +
-    req.path);
+    req.path;
 
   if (link[link.length - 1] != "/") {
     link = link + "/";
@@ -127,8 +132,8 @@ app.get("/github/*", async (req, res) => {
     output.sort(eventSorter);
     return res.render("directory", {
       data: output,
-      structure: "./" + repo + "/" + structure,
-      curDir,
+      structure: decodeURI("./" + repo + "/" + structure),
+      curDir: decodeURI(curDir),
       username,
       repo,
       profilePic: "https://github.com/" + username + ".png",
@@ -137,9 +142,16 @@ app.get("/github/*", async (req, res) => {
     });
   } else {
     try {
-      var ext = output.name.split(".")[1];
+      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", output);
+      var ext = output.name.split(".").pop();
       var code = await getCode(username, repo, structure);
+      console.log(ext);
+      var isJava = 0;
+      if (ext == "java") {
+        isJava = 1;
+      }
       console.log(code);
+      console.log(parentURL);
       res.render("index", {
         theme: "solarized_dark",
         description: code,
@@ -147,9 +159,11 @@ app.get("/github/*", async (req, res) => {
         profilePic: "https://github.com/" + username + ".png",
         userLink: "https://github.com/" + username,
         repoLink: "https://github.com/" + username + "/" + repo,
-        name: "./" + repo + "/" + structure,
+        name: decodeURI("./" + repo + "/" + structure),
         username,
+        parentURL: parentURL,
         repo,
+        isJava,
       });
     } catch (err) {
       console.log(err);
@@ -168,13 +182,14 @@ app.post("/github/*", async (req, res) => {
   }
 
   var output = await getRepo(username, repo, structure);
-
-  var link = (res.locals.requested_url =
+  var parentURL =
+    req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
+  var link =
     req.protocol +
     "://" +
     req.hostname +
     (port != 3000 ? "" : ":" + port) +
-    req.path);
+    req.path;
 
   if (link[link.length - 1] != "/") {
     link = link + "/";
@@ -213,9 +228,16 @@ app.post("/github/*", async (req, res) => {
     });
   } else {
     try {
-      var ext = output.name.split(".")[1];
+      var ext = output.name.split(".").pop();
+      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", output);
+      console.log(ext);
       var code = await getCode(username, repo, structure);
+      var isJava = 0;
+      if (ext == "java") {
+        isJava = 1;
+      }
       console.log(code);
+      console.log(parentURL);
       res.render("index", {
         theme: "solarized_dark",
         description: code,
@@ -225,7 +247,9 @@ app.post("/github/*", async (req, res) => {
         repoLink: "https://github.com/" + username + "/" + repo,
         name: "./" + repo + "/" + structure,
         username,
+        parentURL: parentURL,
         repo,
+        isJava,
       });
     } catch (err) {
       console.log(err);

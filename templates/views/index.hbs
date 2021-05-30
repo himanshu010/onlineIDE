@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/switchButton.css" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/css/index.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
         charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/index.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Raleway:wght@600&display=swap"
         rel="stylesheet">
@@ -17,7 +17,7 @@
 </head>
 
 <body class="body">
-    <form action="" method="post" id="getOutput">
+    <form action={{parentURL}} method="post" id="getOutput">
         <section class="options">
             <div class="opContainer">
                 <div class="heading">Online Ide<br>
@@ -52,20 +52,28 @@
                         <option value="monokai">monokai</option>
                         <option value="terminal">Terminal</option>
                     </select>
-                    <button id="button" type="submit"></button>
+                    <button id="button" class="run-bt" type="submit"></button>
                 </div>
             </div>
         </section>
     </form>
-    {{#if name}}
     <div class="userInfo">
-        <div><img class="dp" src={{profilePic}}></div>
-        <div class="ui-text">
-            <div class="username"><a href={{userLink}}>{{username}}</a></div>
-            <div class="repo"><a href={{repoLink}}>{{repo}}</a></div>
+        {{#if name}}
+        <div>
+            <div><img class="dp" src={{profilePic}}></div>
+            <div class="ui-text">
+                <div class="username"><a href={{userLink}}>{{username}}</a></div>
+                <div class="repo"><a href={{repoLink}}>{{repo}}</a></div>
+            </div>
+        </div>
+        {{/if}}
+        <div class="switch-button" style="margin-right: 40px !important; margin-top: 20px;">
+            <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider" />
+                <span class="slider round"></span>
+            </label>
         </div>
     </div>
-    {{/if}}
     <textarea style="display: none" name="description" id="getProgram" form="getOutput"></textarea>
     <textarea style="display: none" id="getScript" name="getScript">{{this.description}}</textarea>
     <textarea style="display: none" id="getLang" name="getLang">{{this.lang}}</textarea>
@@ -76,6 +84,8 @@
     <div class="msg" id="msg">{{this.msg}} <br />
         CPU Time : {{this.time}} sec(s)<br />
         Memory : {{this.memory}} kilobyte(s)</div>
+    {{else if isJava}}
+    <div class="msg" id="msg">Class should be "main"</div>
     {{/if}}
     <div id="io">
         <textarea placeholder="Input Text Here..." id="input" name="input" form="getOutput">{{this.stdin}}</textarea>
@@ -83,12 +93,15 @@
     </div>
     {{!-- <div id="container"> --}}
         <div id="editor"></div>
-    {{!-- </div> --}}
+        {{!--
+    </div> --}}
     {{!-- {{>footer}} --}}
     <script type="text/javascript">
         $('#msg').fadeOut(4000, function () {
             $(this).remove();
         });</script>
+    {{!-- <script type="text/javascript" src="/js/switchButton.js"></script> --}}
+    <script type="text/javascript" src="/js/index.js"></script>
 
 </body>
 
