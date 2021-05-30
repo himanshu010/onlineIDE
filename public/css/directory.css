@@ -89,6 +89,7 @@ tr:hover {
   height: 75px;
   width: 75px;
   border-radius: 100px;
+  border: var(--font-color-primary) 2px solid;
 }
 
 .ui-text {

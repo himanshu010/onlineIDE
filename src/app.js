@@ -94,57 +94,60 @@ app.get("/github/*", async (req, res) => {
   for (var i = 3; i < arr.length; i++) {
     structure = structure + arr[i] + "/";
   }
+  try {
+    var output = await getRepo(username, repo, structure);
+    var parentURL =
+      req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
+    var link =
+      req.protocol +
+      "://" +
+      req.hostname +
+      (port != 3000 ? "" : ":" + port) +
+      req.path;
 
-  var output = await getRepo(username, repo, structure);
-  var parentURL =
-    req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
-  var link =
-    req.protocol +
-    "://" +
-    req.hostname +
-    (port != 3000 ? "" : ":" + port) +
-    req.path;
-
-  if (link[link.length - 1] != "/") {
-    link = link + "/";
-  }
-
-  for (var i = 0; i < output.length; i++) {
-    var splitArr = output[i].url.split("/");
-    var name = splitArr[splitArr.length - 1].split("?")[0];
-    output[i].url = link + name;
-  }
-  for (var i = 0; i < output.length; i++) {
-    if (output[i].type === "dir") {
-      output[i].isDir = 1;
-    } else {
-      output[i].isDir = 0;
+    if (link[link.length - 1] != "/") {
+      link = link + "/";
     }
-  }
 
-  var curDir;
-  if (structure.length === 0) {
-    curDir = repo;
-  } else {
-    curDir = arr[arr.length - 1];
-  }
-  if (Object.prototype.toString.call(output) === "[object Array]") {
-    output.sort(eventSorter);
-    return res.render("directory", {
-      data: output,
-      structure: decodeURI("./" + repo + "/" + structure),
-      curDir: decodeURI(curDir),
-      username,
-      repo,
-      profilePic: "https://github.com/" + username + ".png",
-      userLink: "https://github.com/" + username,
-      repoLink: "https://github.com/" + username + "/" + repo,
-    });
-  } else {
-    try {
-      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", output);
+    for (var i = 0; i < output.length; i++) {
+      var splitArr = output[i].url.split("/");
+      var name = splitArr[splitArr.length - 1].split("?")[0];
+      output[i].url = link + name;
+    }
+    for (var i = 0; i < output.length; i++) {
+      if (output[i].type === "dir") {
+        output[i].isDir = 1;
+      } else {
+        output[i].isDir = 0;
+      }
+    }
+
+    var curDir;
+    if (structure.length === 0) {
+      curDir = repo;
+    } else {
+      curDir = arr[arr.length - 1];
+    }
+    if (Object.prototype.toString.call(output) === "[object Array]") {
+      output.sort(eventSorter);
+      return res.render("directory", {
+        data: output,
+        structure: decodeURI("./" + repo + "/" + structure),
+        curDir: decodeURI(curDir),
+        username,
+        repo,
+        profilePic: "https://github.com/" + username + ".png",
+        userLink: "https://github.com/" + username,
+        repoLink: "https://github.com/" + username + "/" + repo,
+      });
+    } else if (output.message) {
+      return res.render("error", { error: output.message });
+    } else {
       var ext = output.name.split(".").pop();
       var code = await getCode(username, repo, structure);
+      if (code.message) {
+        return res.render("error", { error: code.message });
+      }
       console.log(ext);
       var isJava = 0;
       if (ext == "java") {
@@ -165,9 +168,9 @@ app.get("/github/*", async (req, res) => {
         repo,
         isJava,
       });
-    } catch (err) {
-      console.log(err);
     }
+  } catch (error) {
+    res.render("error", { error });
   }
 });
 
@@ -180,58 +183,61 @@ app.post("/github/*", async (req, res) => {
   for (var i = 3; i < arr.length; i++) {
     structure = structure + arr[i] + "/";
   }
+  try {
+    var output = await getRepo(username, repo, structure);
+    var parentURL =
+      req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
+    var link =
+      req.protocol +
+      "://" +
+      req.hostname +
+      (port != 3000 ? "" : ":" + port) +
+      req.path;
 
-  var output = await getRepo(username, repo, structure);
-  var parentURL =
-    req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
-  var link =
-    req.protocol +
-    "://" +
-    req.hostname +
-    (port != 3000 ? "" : ":" + port) +
-    req.path;
-
-  if (link[link.length - 1] != "/") {
-    link = link + "/";
-  }
-
-  for (var i = 0; i < output.length; i++) {
-    var splitArr = output[i].url.split("/");
-    var name = splitArr[splitArr.length - 1].split("?")[0];
-    output[i].url = link + name;
-  }
-  for (var i = 0; i < output.length; i++) {
-    if (output[i].type === "dir") {
-      output[i].isDir = 1;
-    } else {
-      output[i].isDir = 0;
+    if (link[link.length - 1] != "/") {
+      link = link + "/";
     }
-  }
 
-  var curDir;
-  if (structure.length === 0) {
-    curDir = repo;
-  } else {
-    curDir = arr[arr.length - 1];
-  }
-  if (Object.prototype.toString.call(output) === "[object Array]") {
-    output.sort(eventSorter);
-    return res.render("directory", {
-      data: output,
-      structure: "./" + repo + "/" + structure,
-      curDir,
-      username,
-      repo,
-      profilePic: "https://github.com/" + username + ".png",
-      userLink: "https://github.com/" + username,
-      repoLink: "https://github.com/" + username + "/" + repo,
-    });
-  } else {
-    try {
+    for (var i = 0; i < output.length; i++) {
+      var splitArr = output[i].url.split("/");
+      var name = splitArr[splitArr.length - 1].split("?")[0];
+      output[i].url = link + name;
+    }
+    for (var i = 0; i < output.length; i++) {
+      if (output[i].type === "dir") {
+        output[i].isDir = 1;
+      } else {
+        output[i].isDir = 0;
+      }
+    }
+
+    var curDir;
+    if (structure.length === 0) {
+      curDir = repo;
+    } else {
+      curDir = arr[arr.length - 1];
+    }
+    if (Object.prototype.toString.call(output) === "[object Array]") {
+      output.sort(eventSorter);
+      return res.render("directory", {
+        data: output,
+        structure: decodeURI("./" + repo + "/" + structure),
+        curDir: decodeURI(curDir),
+        username,
+        repo,
+        profilePic: "https://github.com/" + username + ".png",
+        userLink: "https://github.com/" + username,
+        repoLink: "https://github.com/" + username + "/" + repo,
+      });
+    } else if (output.message) {
+      return res.render("error", { error: output.message });
+    } else {
       var ext = output.name.split(".").pop();
-      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", output);
-      console.log(ext);
       var code = await getCode(username, repo, structure);
+      if (code.message) {
+        return res.render("error", { error: code.message });
+      }
+      console.log(ext);
       var isJava = 0;
       if (ext == "java") {
         isJava = 1;
@@ -245,18 +251,17 @@ app.post("/github/*", async (req, res) => {
         profilePic: "https://github.com/" + username + ".png",
         userLink: "https://github.com/" + username,
         repoLink: "https://github.com/" + username + "/" + repo,
-        name: "./" + repo + "/" + structure,
+        name: decodeURI("./" + repo + "/" + structure),
         username,
         parentURL: parentURL,
         repo,
         isJava,
       });
-    } catch (err) {
-      console.log(err);
     }
+  } catch (error) {
+    res.render("error", { error });
   }
 });
-
 app.get("*", (req, res) => {
   res.render("404");
 });

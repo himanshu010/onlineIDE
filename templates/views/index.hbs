@@ -17,7 +17,7 @@
 </head>
 
 <body class="body">
-    <form action={{parentURL}} method="post" id="getOutput">
+<form action="/" method="post" id="getOutput">
         <section class="options">
             <div class="opContainer">
                 <div class="heading">Online Ide<br>
@@ -91,16 +91,11 @@
         <textarea placeholder="Input Text Here..." id="input" name="input" form="getOutput">{{this.stdin}}</textarea>
         <textarea placeholder="Output will be shown here..." id="output" name="output">{{this.stdout}}</textarea>
     </div>
-    {{!-- <div id="container"> --}}
-        <div id="editor"></div>
-        {{!--
-    </div> --}}
-    {{!-- {{>footer}} --}}
+        <div id="editor"></div>        
     <script type="text/javascript">
         $('#msg').fadeOut(4000, function () {
             $(this).remove();
         });</script>
-    {{!-- <script type="text/javascript" src="/js/switchButton.js"></script> --}}
     <script type="text/javascript" src="/js/index.js"></script>
 
 </body>
