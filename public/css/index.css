@@ -304,7 +304,7 @@ button:after {
   font-weight: bolder;
 }
 
-/* @media (max-width: 767px) {
+@media (max-width: 767px) {
   #editor {
     width: 100vw;
     font-size: 10px;
@@ -312,4 +312,4 @@ button:after {
   .name {
     display: none;
   }
-} */
+}
