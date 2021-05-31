@@ -1,24 +1,50 @@
-<link rel="stylesheet" href="/css/error.css" type="text/css" />
-<section class="page_404">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 ">
-                <div class="col-sm-10 col-sm-offset-1  text-center">
-                    <div class="four_zero_four_bg">
-                        <h1 class="text-center ">Ooops!</h1>
-                    </div>
+<!DOCTYPE html>
+<html lang="en">
 
-                    <div class="contant_box_404">
-                        <h3 class="h2">
-                            {{error}}
-                        </h3>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/error.css" type="text/css" />
+    <script>
+        function get_action(form) {
+            var url = window.location.href
+            document.getElementById("parent_url").value = url;
+        }
+    </script>
+    <title>Error</title>
+</head>
 
-                        <p>{{errno}}</p>
+<body>
+    <section class="page_404">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <div class="col-sm-10 col-sm-offset-1  text-center">
+                        <div class="four_zero_four_bg">
+                            <h1 class="text-center ">Ooops!</h1>
+                        </div>
 
-                        <a href="/github" class="link_404">Go to Home</a>
+                        <div class="contant_box_404">
+                            <h3 class="h2">
+                                {{error}}
+                            </h3>
+
+                            <p>{{errno}}</p>
+                            {{#if rateExd}}
+                            <form onsubmit="get_action(this);" action="/auth" method="get">
+                                <input type="hidden" id="parent_url" name="parent_url">
+                                <input class="link_404 bt-f" type="submit" value="Authenticate">
+                            </form>
+                            {{else}}
+                            <a href="/" class="link_404">Go to Home</a>
+                            {{/if}}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</body>
+
+</html>

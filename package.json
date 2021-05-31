@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.21.1",
     "base-64": "^1.0.0",
     "compilex": "^0.7.4",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.2.0",
     "handlebars": "^4.7.6",
     "hbs": "^4.1.1",
     "js-base64": "^3.6.1",
+    "node-localstorage": "^2.1.6",
     "path": "^0.12.7",
     "postman-request": "^2.88.1-postman.27",
     "request": "^2.88.2"
