@@ -1,3 +1,4 @@
+const axios = require("axios");
 const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
@@ -6,6 +7,7 @@ const output = require("./utils/output");
 const getRepo = require("./utils/getRepo");
 const getCode = require("./utils/getCode");
 const getLang = require("./utils/getLang");
+const cookieParser = require("cookie-parser");
 const { type } = require("os");
 
 dotenv.config({ path: "./config/dev.env" });
@@ -32,6 +34,12 @@ hbs.registerPartials(partialsPath);
 app.use(express.static(publicDirectoryPath));
 app.use(express.urlencoded());
 app.use(express.json());
+app.use(cookieParser());
+
+let token = null;
+let parent_url = "/";
+const clientId = process.env.CLIENT_G_ID;
+const clientSecret = process.env.CLIENT_G_SECRET;
 
 app.get("", (req, res) => {
   res.render("index");
@@ -79,13 +87,12 @@ app.get("/github", (req, res) => {
   res.render("githubRepoCode");
 });
 
-// app.get("/github/*", (req, res) => {
-//   res.render("index");
-// });
 function eventSorter(a, b) {
   return a.isDir > b.isDir ? -1 : 1;
 }
+
 app.get("/github/*", async (req, res) => {
+  var token = req.cookies.auth;
   var structure = req.originalUrl.substring(7);
   var arr = structure.split("/");
   const username = arr[1];
@@ -95,7 +102,7 @@ app.get("/github/*", async (req, res) => {
     structure = structure + arr[i] + "/";
   }
   try {
-    var output = await getRepo(username, repo, structure);
+    var output = await getRepo(username, repo, structure, token);
     var parentURL =
       req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
     var link =
@@ -141,20 +148,23 @@ app.get("/github/*", async (req, res) => {
         repoLink: "https://github.com/" + username + "/" + repo,
       });
     } else if (output.message) {
-      return res.render("error", { error: output.message });
+      let rateExd = 0;
+      if (output.message.length >= 23) {
+        if (output.message.substring(0, 23) === "API rate limit exceeded") {
+          rateExd = 1;
+        }
+      }
+      return res.render("error", { error: output.message, rateExd });
     } else {
       var ext = output.name.split(".").pop();
-      var code = await getCode(username, repo, structure);
+      var code = await getCode(username, repo, structure, token);
       if (code.message) {
         return res.render("error", { error: code.message });
       }
-      console.log(ext);
       var isJava = 0;
       if (ext == "java") {
         isJava = 1;
       }
-      console.log(code);
-      console.log(parentURL);
       res.render("index", {
         theme: "solarized_dark",
         description: code,
@@ -175,6 +185,7 @@ app.get("/github/*", async (req, res) => {
 });
 
 app.post("/github/*", async (req, res) => {
+  var token = req.cookies.auth;
   var structure = req.originalUrl.substring(7);
   var arr = structure.split("/");
   const username = arr[1];
@@ -184,7 +195,7 @@ app.post("/github/*", async (req, res) => {
     structure = structure + arr[i] + "/";
   }
   try {
-    var output = await getRepo(username, repo, structure);
+    var output = await getRepo(username, repo, structure, token);
     var parentURL =
       req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
     var link =
@@ -230,20 +241,23 @@ app.post("/github/*", async (req, res) => {
         repoLink: "https://github.com/" + username + "/" + repo,
       });
     } else if (output.message) {
-      return res.render("error", { error: output.message });
+      let rateExd = 0;
+      if (output.message.length >= 23) {
+        if (output.message.substring(0, 23) === "API rate limit exceeded") {
+          rateExd = 1;
+        }
+      }
+      return res.render("error", { error: output.message, rateExd });
     } else {
       var ext = output.name.split(".").pop();
-      var code = await getCode(username, repo, structure);
+      var code = await getCode(username, repo, structure, token);
       if (code.message) {
         return res.render("error", { error: code.message });
       }
-      console.log(ext);
       var isJava = 0;
       if (ext == "java") {
         isJava = 1;
       }
-      console.log(code);
-      console.log(parentURL);
       res.render("index", {
         theme: "solarized_dark",
         description: code,
@@ -262,6 +276,46 @@ app.post("/github/*", async (req, res) => {
     res.render("error", { error });
   }
 });
+
+app.get("/auth", (req, res) => {
+  console.log(req.query.parent_url);
+  res.redirect(
+    `https://github.com/login/oauth/authorize?&client_id=${clientId}`
+  );
+
+  parent_url = req.query.parent_url;
+});
+
+app.post("/auth", (req, res) => {
+  console.log(req.query.parent_url);
+  res.redirect(
+    `https://github.com/login/oauth/authorize?&client_id=${clientId}`
+  );
+  parent_url = req.query.parent_url;
+});
+
+app.get("/auth/oauth-callback", (req, res) => {
+  const body = {
+    client_id: clientId,
+    client_secret: clientSecret,
+    code: req.query.code,
+  };
+  const opts = { headers: { accept: "application/json" } };
+  axios
+    .post(`https://github.com/login/oauth/access_token`, body, opts)
+    .then((res) => res.data["access_token"])
+    .then((_token) => {
+      console.log("My token:", token);
+      token = _token;
+      res.cookie("auth", token);
+      if (parent_url) {
+        return res.redirect(parent_url);
+      }
+      return res.redirect("/github");
+    })
+    .catch((err) => res.render("error", { error: err.message }));
+});
+
 app.get("*", (req, res) => {
   res.render("404");
 });
