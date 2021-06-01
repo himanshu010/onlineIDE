@@ -86,8 +86,15 @@
   font-family: "BeautifulBloom-Alt";
   font-size: 25px;
   padding-left: 5px;
+  color: var(--font-color-primary);
+}
+.gc {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
   color: #35b7ff;
 }
+
 a {
   text-decoration: none !important;
 }
@@ -311,5 +318,9 @@ button:after {
   }
   .name {
     display: none;
+  }
+  .gc {
+    border: none !important;
+    padding: 0px;
   }
 }
