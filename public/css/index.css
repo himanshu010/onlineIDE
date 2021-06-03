@@ -207,7 +207,7 @@ select::-ms-expand {
   border-radius: 4px;
 }
 
-button {
+.but1 {
   outline: none;
   height: 40px;
   text-align: center;
@@ -224,16 +224,16 @@ button {
   transition: all 0.25s ease;
 }
 
-button:hover {
+.but1:hover {
   color: white;
   background: #35b7ff;
 }
 
-button:active {
+.but1:active {
   letter-spacing: 2px;
 }
 
-button:after {
+.but1:after {
   content: "▶ RUN";
 }
 

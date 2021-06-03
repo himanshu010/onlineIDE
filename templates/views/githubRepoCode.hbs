@@ -13,7 +13,7 @@
         url = url.slice(0, -1);
       }
       url = url.slice(0, -7)
-      but.href = url + "/"+"auth";
+      but.href = url + "/" + "auth";
     }
 
     function get_action(form) {
@@ -38,6 +38,8 @@
 </head>
 
 <body>
+  <div id={{authPop}}></div>
+  {{> authPopUp }}
   <!-- Preloader -->
   <div class="preloader">
     <div class="spinner-border text-primary" role="status">

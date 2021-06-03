@@ -9,6 +9,7 @@ const getCode = require("./utils/getCode");
 const getLang = require("./utils/getLang");
 const cookieParser = require("cookie-parser");
 const { type } = require("os");
+let authPop = "noPop";
 
 dotenv.config({ path: "./config/dev.env" });
 
@@ -84,7 +85,10 @@ app.post("", (req, res) => {
 });
 
 app.get("/github", (req, res) => {
-  res.render("githubRepoCode");
+  res.render("githubRepoCode", { authPop });
+  if (authPop === "authPop") {
+    authPop = "noPop";
+  }
 });
 
 function eventSorter(a, b) {
@@ -137,7 +141,7 @@ app.get("/github/*", async (req, res) => {
     }
     if (Object.prototype.toString.call(output) === "[object Array]") {
       output.sort(eventSorter);
-      return res.render("directory", {
+      res.render("directory", {
         data: output,
         structure: decodeURI("./" + repo + "/" + structure),
         curDir: decodeURI(curDir),
@@ -146,6 +150,7 @@ app.get("/github/*", async (req, res) => {
         profilePic: "https://github.com/" + username + ".png",
         userLink: "https://github.com/" + username,
         repoLink: "https://github.com/" + username + "/" + repo,
+        authPop,
       });
     } else if (output.message) {
       let rateExd = 0;
@@ -154,7 +159,7 @@ app.get("/github/*", async (req, res) => {
           rateExd = 1;
         }
       }
-      return res.render("error", { error: output.message, rateExd });
+      res.render("error", { error: output.message, rateExd });
     } else {
       var ext = output.name.split(".").pop();
       var code = await getCode(username, repo, structure, token);
@@ -177,7 +182,11 @@ app.get("/github/*", async (req, res) => {
         parentURL: parentURL,
         repo,
         isJava,
+        authPop,
       });
+    }
+    if (authPop === "authPop") {
+      authPop = "noPop";
     }
   } catch (error) {
     res.render("error", { error });
@@ -230,7 +239,7 @@ app.post("/github/*", async (req, res) => {
     }
     if (Object.prototype.toString.call(output) === "[object Array]") {
       output.sort(eventSorter);
-      return res.render("directory", {
+      res.render("directory", {
         data: output,
         structure: decodeURI("./" + repo + "/" + structure),
         curDir: decodeURI(curDir),
@@ -239,6 +248,7 @@ app.post("/github/*", async (req, res) => {
         profilePic: "https://github.com/" + username + ".png",
         userLink: "https://github.com/" + username,
         repoLink: "https://github.com/" + username + "/" + repo,
+        authPop,
       });
     } else if (output.message) {
       let rateExd = 0;
@@ -247,7 +257,7 @@ app.post("/github/*", async (req, res) => {
           rateExd = 1;
         }
       }
-      return res.render("error", { error: output.message, rateExd });
+      res.render("error", { error: output.message, rateExd });
     } else {
       var ext = output.name.split(".").pop();
       var code = await getCode(username, repo, structure, token);
@@ -270,7 +280,11 @@ app.post("/github/*", async (req, res) => {
         parentURL: parentURL,
         repo,
         isJava,
+        authPop,
       });
+    }
+    if (authPop === "authPop") {
+      authPop = "noPop";
     }
   } catch (error) {
     res.render("error", { error });
@@ -305,6 +319,7 @@ app.get("/auth/oauth-callback", (req, res) => {
     .post(`https://github.com/login/oauth/access_token`, body, opts)
     .then((res) => res.data["access_token"])
     .then((_token) => {
+      authPop = "authPop";
       console.log("My token:", token);
       token = _token;
       res.cookie("auth", token);
