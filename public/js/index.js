@@ -1,4 +1,5 @@
 console.log("loaded");
+ace.require("ace/ext/language_tools");
 onload = function () {
   // Setup
   console.log(localStorage.getItem("theme"));
@@ -11,7 +12,6 @@ onload = function () {
   }
   var languageOption = document.getElementById("language");
   var themeOption = document.getElementById("theme");
-  var codeEditor = document.getElementById("editor");
   var textarea = $('textarea[name="description"]');
 
   var theme = "solarized_dark";
@@ -236,24 +236,6 @@ onload = function () {
     editor.getSession().setMode("ace/mode/" + type);
     editor.setShowPrintMargin(false);
 
-    editor.getSession().on("change", function () {
-      textarea.val(editor.getSession().getValue());
-    });
-    textarea.val(content);
-  }
-  function changeContent1(content, type) {
-    var elementExists = document.getElementById("editor");
-    document.body.removeChild(elementExists);
-
-    var div = document.createElement("div");
-    div.textContent = content;
-    div.id = "editor";
-    document.body.appendChild(div);
-
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/" + theme);
-    editor.getSession().setMode("ace/mode/" + type);
-    editor.setShowPrintMargin(false);
     editor.getSession().on("change", function () {
       textarea.val(editor.getSession().getValue());
     });

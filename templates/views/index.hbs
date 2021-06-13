@@ -3,23 +3,24 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/css/switchButton.css" type="text/css" />
+    <link rel="stylesheet" href="/public/css/switchButton.css" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/css/index.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
-        charset="utf-8"></script>
+    <link href="/public/css/index.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    </body>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Raleway:wght@600&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
+    <script src="/modules/ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/modules/ace-builds/src-min-noconflict/ext-language_tools.js"></script>
     <title>OnlineIDE</title>
 </head>
 
 <body class="body">
-      <div id={{authPop}}></div>
-  {{> authPopUp }}
-<form action="/" method="post" id="getOutput">
+    <div id={{authPop}}></div>
+    {{> authPopUp }}
+    <form action="/" method="post" id="getOutput">
         <section class="options">
             <div class="opContainer">
                 <div class="heading">Online Ide<br>
@@ -93,12 +94,12 @@
         <textarea placeholder="Input Text Here..." id="input" name="input" form="getOutput">{{this.stdin}}</textarea>
         <textarea placeholder="Output will be shown here..." id="output" name="output">{{this.stdout}}</textarea>
     </div>
-        <div id="editor"></div>        
+    <div id="editor"></div>
     <script type="text/javascript">
         $('#msg').fadeOut(4000, function () {
             $(this).remove();
         });</script>
-    <script type="text/javascript" src="/js/index.js"></script>
+    <script type="text/javascript" src="/public/js/index.js"></script>
 
 </body>
 

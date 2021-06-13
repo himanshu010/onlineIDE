@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/directory.css" type="text/css" />
-    <link rel="stylesheet" href="/css/switchButton.css" type="text/css" />
-    <script type="text/javascript" src="/js/switchButton.js"></script>
+    <link rel="stylesheet" href="/public/css/directory.css" type="text/css" />
+    <link rel="stylesheet" href="/public/css/switchButton.css" type="text/css" />
+    <script type="text/javascript" src="/public/js/switchButton.js"></script>
     <title>{{curDir}}</title>
 </head>
 
 <body>
     <div id={{authPop}}></div>
     {{! prettier-ignore }}
-  {{> authPopUp }}
+    {{> authPopUp }}
     <div class="header">
         <div class="header-text">
             <div class="ht-main">GitHub's Compiler</div>
@@ -48,9 +48,9 @@
                             <tr>
                                 <td data-label="Job Title">
                                     {{#if isDir}}
-                                    <img class="type" alt="dir" src="/assets/images/folder.png" />
+                                    <img class="type" alt="dir" src="/public/assets/images/folder.png" />
                                     {{else}}
-                                    <img class="type" alt="file" src="/assets/images/file.png" />
+                                    <img class="type" alt="file" src="/public/assets/images/file.png" />
                                     {{/if}}
                                     <a href={{this.url}}>{{this.name}}</a>
                                 </td>
