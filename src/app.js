@@ -12,6 +12,10 @@ const { type } = require("os");
 let authPop = "noPop";
 
 dotenv.config({ path: "./config/dev.env" });
+
+console.log(__dirname);
+console.log(path.join(__dirname, ".."));
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -19,7 +23,6 @@ const port = process.env.PORT || 3000;
 const publicDirectoryPath = path.join(__dirname, "../public");
 const viewPath = path.join(__dirname, "../templates/views");
 const partialsPath = path.join(__dirname, "../templates/partials");
-const modulePath = path.join(__dirname, "../node_modules");
 
 //setup handlebars
 app.set("view engine", "hbs");
@@ -29,8 +32,7 @@ hbs.registerPartials(partialsPath);
 //seting up static npfiles. So that
 //we don't have to give location
 //of whole file present in public folder
-app.use("/public", express.static(publicDirectoryPath));
-app.use("/modules", express.static(modulePath));
+app.use(express.static(publicDirectoryPath));
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(cookieParser());
