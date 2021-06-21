@@ -1,6 +1,6 @@
 var request = require("postman-request");
 
-const output = (script, language, stdin, callback) => {
+async function output(script, language, stdin) {
   var program = {
     script,
     language,
@@ -10,27 +10,23 @@ const output = (script, language, stdin, callback) => {
     clientSecret: process.env.CLIENT_SECRET,
   };
 
-  request(
-    {
-      url: "https://api.jdoodle.com/v1/execute",
-      method: "POST",
-      json: program,
-    },
-
-    function (error, response, body) {
-      if (error) {
-        callback(error, undefined);
-      } else {
-        callback(error, {
-          statusCode: response && response.statusCode,
-          body: body,
-        });
+  // Return new promise
+  return new Promise(function (resolve, reject) {
+    // Do async job
+    request(
+      {
+        url: "https://api.jdoodle.com/v1/execute",
+        method: "POST",
+        json: program,
+      },
+      function (err, response, body) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ statusCode: response && response.statusCode, body: body });
+        }
       }
-      //   console.log("error:", error);
-      //   console.log("statusCode:", response && response.statusCode);
-      //   console.log("body:", body);
-    }
-  );
-};
-
+    );
+  });
+}
 module.exports = output;

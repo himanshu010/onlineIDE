@@ -1,7 +1,5 @@
-console.log("loaded");
 onload = function () {
   // Setup
-  console.log(localStorage.getItem("theme"));
   if (localStorage.getItem("theme") === "theme-dark") {
     setTheme("theme-dark");
     document.getElementById("slider").checked = true;
@@ -309,7 +307,6 @@ function setTheme(themeName) {
 }
 
 function toggleTheme() {
-  console.log(localStorage.getItem("theme"));
   if (localStorage.getItem("theme") === "theme-dark") {
     setTheme("theme-light");
   } else {

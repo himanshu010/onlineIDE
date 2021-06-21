@@ -46,42 +46,43 @@ app.get("", (req, res) => {
   res.render("index");
 });
 
-app.post("", (req, res) => {
+app.post("", async (req, res) => {
   console.log(req.body);
   var parentURL =
     req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
   console.log(parentURL);
-  output(
-    req.body.description,
-    req.body["select-language"],
-    req.body.input,
-    (error, result) => {
-      if (error) {
-        return res.render("error", {
-          error: error.code,
-          errno: error.errno,
-        });
-      }
-      var isError = false;
-      if (result.body.memory == null && result.body.cpuTime == null) {
-        isError = true;
-      }
-      console.log(result);
-      console.log(req.body.description);
-      res.render("index", {
-        description: req.body.description,
-        theme: req.body["select-theme"],
-        lang: req.body["select-language"],
-        stdin: req.body.input,
-        stdout: result.body.output,
-        msg: "Compiled",
-        time: result.body.cpuTime,
-        memory: result.body.memory,
-        isError,
-        parentURL: parentURL,
-      });
+  try {
+    console.log(req.body.description);
+    const result = await output(
+      req.body.description,
+      req.body["select-language"],
+      req.body.input
+    );
+    var isError = false;
+    if (result.body.memory == null && result.body.cpuTime == null) {
+      isError = true;
     }
-  );
+    console.log(result);
+    console.log(req.body.description);
+    res.render("index", {
+      description: req.body.description,
+      theme: req.body["select-theme"],
+      lang: req.body["select-language"],
+      stdin: req.body.input,
+      stdout: result.body.output,
+      msg: "Compiled",
+      time: result.body.cpuTime,
+      memory: result.body.memory,
+      isError,
+      parentURL: parentURL,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.render("error", {
+      error: error.code,
+      errno: error.errno,
+    });
+  }
 });
 
 app.get("/github", (req, res) => {
