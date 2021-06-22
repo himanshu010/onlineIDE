@@ -4,7 +4,6 @@ function setTheme(themeName) {
 }
 
 function toggleTheme() {
-  console.log(localStorage.getItem("theme"));
   if (localStorage.getItem("theme") === "theme-dark") {
     setTheme("theme-light");
   } else {
@@ -13,7 +12,6 @@ function toggleTheme() {
 }
 
 window.onload = function () {
-  console.log(localStorage.getItem("theme"));
   if (localStorage.getItem("theme") === "theme-dark") {
     setTheme("theme-dark");
     document.getElementById("slider").checked = true;

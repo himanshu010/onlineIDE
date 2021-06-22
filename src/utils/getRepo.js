@@ -2,7 +2,6 @@ var request = require("postman-request");
 
 async function getRepo(username, repo, structure, token) {
   if (token) {
-    console.log("with_token");
     var b_token = "Bearer " + token;
     const options = {
       url:

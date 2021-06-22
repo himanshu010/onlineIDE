@@ -13,9 +13,6 @@ let authPop = "noPop";
 
 dotenv.config({ path: "./config/dev.env" });
 
-console.log(__dirname);
-console.log(path.join(__dirname, ".."));
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -47,12 +44,9 @@ app.get("", (req, res) => {
 });
 
 app.post("", async (req, res) => {
-  console.log(req.body);
   var parentURL =
     req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
-  console.log(parentURL);
   try {
-    console.log(req.body.description);
     const result = await output(
       req.body.description,
       req.body["select-language"],
@@ -62,8 +56,6 @@ app.post("", async (req, res) => {
     if (result.body.memory == null && result.body.cpuTime == null) {
       isError = true;
     }
-    console.log(result);
-    console.log(req.body.description);
     res.render("index", {
       description: req.body.description,
       theme: req.body["select-theme"],
@@ -77,7 +69,6 @@ app.post("", async (req, res) => {
       parentURL: parentURL,
     });
   } catch (error) {
-    console.log(error);
     return res.render("error", {
       error: error.code,
       errno: error.errno,
@@ -293,7 +284,6 @@ app.post("/github/*", async (req, res) => {
 });
 
 app.get("/auth", (req, res) => {
-  console.log(req.query.parent_url);
   res.redirect(
     `https://github.com/login/oauth/authorize?&client_id=${clientId}`
   );
@@ -302,7 +292,6 @@ app.get("/auth", (req, res) => {
 });
 
 app.post("/auth", (req, res) => {
-  console.log(req.query.parent_url);
   res.redirect(
     `https://github.com/login/oauth/authorize?&client_id=${clientId}`
   );
@@ -321,7 +310,6 @@ app.get("/auth/oauth-callback", (req, res) => {
     .then((res) => res.data["access_token"])
     .then((_token) => {
       authPop = "authPop";
-      console.log("My token:", token);
       token = _token;
       res.cookie("auth", token);
       if (parent_url) {
