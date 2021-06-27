@@ -13,7 +13,7 @@
 <body>
     <div id={{authPop}}></div>
     {{! prettier-ignore }}
-  {{> authPopUp }}
+    {{> authPopUp }}
     <div class="header">
         <div class="header-text">
             <div class="ht-main">GitHub's Compiler</div>
@@ -23,7 +23,7 @@
     <div class="p-10 bg-surface-secondary">
         <div class="userInfo">
             <div>
-                <div><img class="dp" src={{profilePic}}></div>
+                <div><a href={{userLink}}><img class="dp" src={{profilePic}}></a></div>
                 <div class="ui-text">
                     <div class="username"><a href={{userLink}}>{{username}}</a></div>
                     <div class="repo"><a href={{repoLink}}>{{repo}}</a></div>
@@ -39,7 +39,7 @@
         <div class="container">
             <div class="card">
                 <div class="card-header">
-                    <h6>{{structure}}</h6>
+                    <h6 class="url">{{structure}}</h6>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover table-nowrap">
@@ -52,7 +52,7 @@
                                     {{else}}
                                     <img class="type" alt="file" src="/assets/images/file.png" />
                                     {{/if}}
-                                    <a href={{this.url}}>{{this.name}}</a>
+                                    <a style="font-size:medium" href={{this.url}}>{{this.name}}</a>
                                 </td>
                             </tr>
                             {{/each}}
@@ -62,6 +62,7 @@
             </div>
         </div>
     </div>
+    {{>footer}}
 </body>
 
 </html>

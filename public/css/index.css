@@ -59,6 +59,10 @@
   --font-color-head: #ebeef2;
 }
 
+body {
+  font-family: "product_sansregular" !important;
+}
+
 .msg {
   font-family: "Raleway", sans-serif;
   font-size: 12px;
@@ -94,7 +98,6 @@
   padding: 5px;
   color: #35b7ff;
 }
-
 a {
   text-decoration: none !important;
 }

@@ -1,4 +1,23 @@
 @import url(https://unpkg.com/@webpixels/css@1.0/dist/index.css);
+@font-face {
+  font-family: "product_sansbold";
+  src: url("../assets/fonts/ProductSans/product_sans_bold_700-webfont.woff2")
+      format("woff2"),
+    url("../assets/fonts/ProductSans/product_sans_bold_700-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "product_sansregular";
+  src: url("../assets/fonts/ProductSans/product_sans_400-webfont.woff2")
+      format("woff2"),
+    url("../assets/fonts/ProductSans/product_sans_400-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
 .theme-light {
   --font-color-primary: black;
@@ -98,4 +117,7 @@ tr:hover {
   padding-left: 20px;
   font-size: 15px;
   font-weight: bolder;
+}
+body {
+  font-family: "product_sansregular" !important;
 }
