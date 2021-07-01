@@ -14,12 +14,13 @@ let authPop = "noPop";
 dotenv.config({ path: "./config/dev.env" });
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 //defining paths for handlebars
 const publicDirectoryPath = path.join(__dirname, "../public");
 const viewPath = path.join(__dirname, "../templates/views");
 const partialsPath = path.join(__dirname, "../templates/partials");
+const reactBuild = path.join(__dirname, "../client/build");
 
 //setup handlebars
 app.set("view engine", "hbs");
@@ -29,6 +30,8 @@ hbs.registerPartials(partialsPath);
 //seting up static npfiles. So that
 //we don't have to give location
 //of whole file present in public folder
+app.engine("html", require("ejs").renderFile);
+app.use(express.static(reactBuild));
 app.use(express.static(publicDirectoryPath));
 app.use(express.urlencoded());
 app.use(express.json());
@@ -40,7 +43,13 @@ const clientId = process.env.CLIENT_G_ID;
 const clientSecret = process.env.CLIENT_G_SECRET;
 
 app.get("", (req, res) => {
-  res.render("index");
+  res.render("index", { user: { displayName: "John Smith" } });
+});
+
+app.post("/live", (req, res) => {
+  console.log(11111);
+  console.log(req.body);
+  res.send(req.body);
 });
 
 app.post("", async (req, res) => {
