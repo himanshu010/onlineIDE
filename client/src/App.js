@@ -1,7 +1,7 @@
 // client/App.js
 import "./App.css";
-import AppContextProvider from "./AppContext.js";
+import Form from "./Form";
 function App() {
-  return <AppContextProvider />;
+  return <Form />;
 }
 export default App;
