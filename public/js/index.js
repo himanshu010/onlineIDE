@@ -313,3 +313,12 @@ function toggleTheme() {
     setTheme("theme-dark");
   }
 }
+
+// document.getElementById("saveButton").addEventListener("click", function () {
+//   document.getElementById("getOutput").action = "/save/program";
+//   document.getElementById("getOutput").method = "POST";
+// });
+
+document.getElementById("button").addEventListener("click", function () {
+  document.getElementById("saveName").remove();
+});

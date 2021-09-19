@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/verify.css" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chilanka&family=Lato&family=Quicksand&family=Raleway:wght@300;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Verify</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="dialog">
+            <h3>Please enter the 4-digit verification code we sent to your email {{email}}</h3>
+            <span class="msg">{{this.msg}}</span>
+            <form id="form" method="post" action="/user/signup/check">
+                <input type="text" id="digit1" name="digit1" maxLength="1" size="1" min="0" max="9"
+                    pattern="[0-9]{1}" required><input type="text" id="digit2" name="digit2" maxLength="1" size="1" min="0"
+                    max="9" pattern="[0-9]{1}" required><input type="text" id="digit3" name="digit3" maxLength="1" size="1"
+                    min="0" max="9" pattern="[0-9]{1}" required><input type="text" id="digit4" name="digit4" maxLength="1"
+                    size="1" min="0" max="9" pattern="[0-9]{1}" required>
+                <input type="hidden" name="email" value="{{email}}">
+                <button type="submit" class="btn btn-primary btn-embossed">Verify</button>
+            </form>
+            <div>
+                Didn't receive the code?<br />
+                <form id='form' method="post" action="/otp/resend">
+                    <input type="hidden" name="email" value="{{email}}">
+                    <input type="hidden" name="msg" value="New OTP sent to your mail">
+                    <button type="submit" class="btn btn-primary btn-embossed">Resend</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/verify.js"></script>
+</body>
+
+</html>

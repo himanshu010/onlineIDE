@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="/css/navbar.css" id="stylesheet" />
+<section class="options">
+    <div class="opContainer">
+        <div class="heading">Online Ide<br>
+            <a href="/github" target="_blank">
+                <span class="signature">
+                    with <span class="gc">Github's Compiler</span>
+                </span>
+            </a>
+        </div>
+        <div class="name">{{name}}</div>
+        <div class="allBut">
+            <div class="upperBut">
+                {{>dpDropDown isLogin=isLogin firstName=firstName lastName=lastName}}
+            </div>
+            {{#if showRunButtons}}
+            <div class="bottonBut">
+                <select class="options_selection" name="select-language" id="language">
+                    <option value="cpp17">C++ 17</option>
+                    <option value="cpp">C++</option>
+                    <option value="cpp14">C++ 14</option>
+                    <option value="python2">Python2</option>
+                    <option value="python3">Python3</option>
+                    <option value="php">PHP</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="java">Java</option>
+                    <option value="c">C</option>
+                </select>
+                <select class="options_selection" name="select-theme" id="theme">
+                    <option value="solarized_dark">Solarized Dark</option>
+                    <option value="cobalt">cobalt</option>
+                    <option value="github">GitHub</option>
+                    <option value="solarizedlight">Solarized Light</option>
+                    <option value="sql_server">SQL Server</option>
+                    <option value="ambiance">Ambiance</option>
+                    <option value="chaos">Chaos</option>
+                    <option value="gruvbox">Gruvbox</option>
+                    <option value="monokai">monokai</option>
+                    <option value="terminal">Terminal</option>
+                </select>
+                <button id="button" class="run-bt but1" type="submit"></button>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</section>

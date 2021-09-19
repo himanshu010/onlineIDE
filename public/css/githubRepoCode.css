@@ -17727,8 +17727,6 @@ svg {
 
   border-radius: 0.75rem;
   background-size: cover;
-
-  -webkit-backface-visibility: hidden;
 }
 @media (prefers-reduced-motion: reduce) {
   .card-img-bg {
@@ -23156,8 +23154,6 @@ section {
 }
 .shape-container svg {
   display: block;
-
-  vertical-align: baseline;
   pointer-events: none;
 
   fill: #fff;
@@ -23391,6 +23387,6 @@ body.loaded > div.preloader {
 .form-cl {
   padding-top: 50px !important;
 }
-.img-fluid{
+.img-fluid {
   border-radius: 15px;
 }

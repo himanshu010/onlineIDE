@@ -138,46 +138,6 @@ a {
 #getOutput {
   height: 10%;
 }
-.options {
-  text-align: center;
-  height: 100%;
-  width: 100%;
-}
-.heading {
-  margin: 10px;
-  color: var(--text-primary);
-  font-family: "product_sansbold", sans-serif;
-  font-size: 25px;
-}
-.opContainer {
-  display: inline-flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--background-color);
-  height: 100% !important;
-}
-.options_selection {
-  padding: 10px;
-  border: none;
-  text-align: center;
-  -webkit-appearance: none;
-  font-family: "Montserrat", sans-serif;
-  font-size: 10px;
-  color: #333;
-  font-weight: bolder;
-  min-width: 10%;
-  background-color: #f2f2f2;
-  border-radius: 10px;
-}
-
-.options .options_selection:focus {
-  outline: none;
-}
-
-select::-ms-expand {
-  display: none;
-}
 
 .text {
   min-height: 15%;
@@ -326,4 +286,187 @@ select::-ms-expand {
     border: none !important;
     padding: 0px;
   }
+}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.svbutton {
+  appearance: none;
+  background: white;
+  border-radius: 0.25em;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 800;
+  line-height: 3em;
+  padding: 0 1em;
+}
+
+.details-modal {
+  background: #ffffff;
+  border-radius: 0.5em;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  left: 50%;
+  max-width: 90%;
+  pointer-events: none;
+  position: absolute;
+  top: 10%;
+  transform: translate(-50%, -50%);
+  width: 30em;
+  text-align: left;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.details-modal .details-modal-close {
+  align-items: center;
+  color: #111827;
+  display: flex;
+  height: 4.5em;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 4.5em;
+}
+.details-modal .details-modal-close svg {
+  display: block;
+}
+.details-modal .details-modal-title {
+  color: #111827;
+  padding: 1.5em 2em;
+  pointer-events: all;
+  position: relative;
+  width: calc(100% - 4.5em);
+}
+.details-modal .details-modal-title h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: normal;
+}
+.details-modal .details-modal-content {
+  border-top: 1px solid #e0e0e0;
+  padding: 2em;
+  pointer-events: all;
+  overflow: auto;
+}
+.details-modal-overlay {
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.8);
+  position: fixed;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+details[open] .details-modal-overlay {
+  pointer-events: all;
+  opacity: 0.5;
+}
+details summary {
+  list-style: none;
+}
+details summary:focus {
+  outline: none;
+}
+details summary::-webkit-details-marker {
+  display: none;
+}
+code {
+  font-family: Monaco, monospace;
+  line-height: 100%;
+  background-color: #2d2d2c;
+  padding: 0.1em 0.4em;
+  letter-spacing: -0.05em;
+  word-break: normal;
+  border-radius: 7px;
+  color: white;
+  font-weight: normal;
+  font-size: 1.75rem;
+  position: relative;
+  top: -2px;
+}
+.container {
+  text-align: center;
+  max-width: 40em;
+  padding: 2em;
+}
+.container > h1 {
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: normal;
+  color: #111827;
+}
+.container > p {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+.container sup {
+  font-size: 1rem;
+  margin-left: 0.25em;
+  opacity: 0.5;
+  position: relative;
+}
+.saveDiv1 {
+  width: 80%;
+  display: inline;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.input {
+  font-family: "product_sansregular";
+  position: relative;
+  width: 550px;
+  height: 50px;
+  border-radius: 6px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.input__field {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: 1px #f3f3f3 solid;
+  padding-left: 20px;
+  vertical-align: middle;
+  font-family: "product_sansregular";
+  font-size: 15px;
+  font-weight: 400;
+}
+.input__label {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #c6c6c6;
+  opacity: 0;
+  font-family: "product_sansregular";
+  font-size: 1rem;
+  font-weight: 300;
+  transition: 0.3s;
+}
+.saveButton {
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  background-color: #35b7ff;
+  color: black;
+  font-family: "product_sansregular";
+  padding: 5px 10px;
+  font-size: 15px;
+}
+
+.saveInput {
+  border: none;
+  border-bottom: 1px solid #e7e7e7;
+  border-radius: 0;
+  padding: 9px 5px;
+  min-height: 40px;
+  font-size: 18px;
+  font-weight: normal;
+  outline: none;
 }

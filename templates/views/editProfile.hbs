@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/editProfile.css" id="stylesheet" />
+    <title>Edit Profile</title>
+</head>
+{{> navbar isLogin=isLogin showRunButtons=showRunButtons firstName=user.firstName lastName=user.lastName}}
+
+<body>
+    <div id="slider"></div>
+    <form action="/profile/update" method="post" enctype="multipart/form-data">
+        <div class="container rounded bg-white mt-5 mb-5">
+            <div class="row">
+                <div class="col-md-3 border-right">
+                    <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                        {{#if pic}}
+                        <img class="rounded-circle mt-5" src="data:{{user.photo.contentType}};base64,{{pic}}"
+                            width="90">
+                        {{else}}
+                        <img class="rounded-circle mt-5" src="/assets/images/dp.png"
+                            width="90">
+                        {{/if}}
+                        
+                        <div>
+                            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                            <main class="main_full">
+                                <div class="container">
+                                    <div class="panel">
+                                        <div class="button_outer">
+                                            <div class="btn_upload">
+                                                <input type="file" id="upload_file" name="photo" accept="image/*">
+                                                Upload Image
+                                            </div>
+                                            <div class="processing_bar"></div>
+                                            <div class="success_box"></div>
+                                        </div>
+                                    </div>
+                                    <div class="error_msg"></div>
+                                    <div class="uploaded_file_view" id="uploaded_view">
+                                        <span class="file_remove">X</span>
+                                    </div>
+                                </div>
+                            </main>
+                        </div>
+                        <span class="font-weight-bold">{{user.firstName}} {{user.lastName}}</span><span
+                            class="text-black-50">{{user.email}}</span>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="p-3 py-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="text-right">Edit your profile</h6>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6"><label class="labels">First Name</label><input type="text"
+                                    class="form-control" placeholder="First Name" name="firstName"
+                                    value="{{user.firstName}}">
+                            </div>
+                            <div class="col-md-6"><label class="labels">Last Name</label><input type="text"
+                                    class="form-control" placeholder="Last Name" name="lastName"
+                                    value="{{user.lastName}}">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12"><label class="labels">Headline</label><input type="text"
+                                    class="form-control" placeholder="Headline" name="headline" value="{{user.headline}}">
+                            </div>
+                            <div class="col-md-12"><label class="labels">College</label><input type="text"
+                                    class="form-control" placeholder="College" name="college" value="{{user.college}}">
+                            </div>
+                        </div>
+                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save
+                                Profile</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+<script type="text/javascript" src="/js/editProfile.js"></script>
+
+</html>
