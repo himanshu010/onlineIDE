@@ -598,6 +598,9 @@ function eventSorter(a, b) {
 }
 
 app.get("/github/*", async (req, res) => {
+  let pic;
+  let decoded;
+  let isLogin = false;
   var token = req.cookies.auth;
   var structure = req.originalUrl.substring(7);
   var arr = structure.split("/");
@@ -608,6 +611,18 @@ app.get("/github/*", async (req, res) => {
     structure = structure + arr[i] + "/";
   }
   try {
+    const logToken = req.cookies["logToken"];
+    let user;
+    if (logToken) {
+      decoded = jwt.verify(logToken, process.env.JWTSECRET);
+      user = await User.findById(decoded.user.id).select("-password");
+
+      if (user.photo.data)
+        pic = new Buffer.from(user.photo.data).toString("base64");
+    }
+    if (user) {
+      isLogin = true;
+    }
     var output = await getRepo(username, repo, structure, token);
     var parentURL =
       req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
@@ -672,6 +687,7 @@ app.get("/github/*", async (req, res) => {
       if (ext == "java") {
         isJava = 1;
       }
+      const showRunButtons = true;
       res.render("index", {
         theme: "solarized_dark",
         description: code,
@@ -686,6 +702,10 @@ app.get("/github/*", async (req, res) => {
         repo,
         isJava,
         authPop,
+        isLogin,
+        pic,
+        showRunButtons,
+        user,
       });
     }
     if (authPop === "authPop") {
@@ -811,6 +831,7 @@ app.post("/auth", (req, res) => {
 });
 
 app.get("/auth/oauth-callback", (req, res) => {
+  console.log("xxxx");
   const body = {
     client_id: clientId,
     client_secret: clientSecret,
@@ -824,6 +845,7 @@ app.get("/auth/oauth-callback", (req, res) => {
       authPop = "authPop";
       token = _token;
       res.cookie("auth", token);
+      console.log(parent_url);
       if (parent_url) {
         return res.redirect(parent_url);
       }
