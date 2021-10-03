@@ -831,7 +831,6 @@ app.post("/auth", (req, res) => {
 });
 
 app.get("/auth/oauth-callback", (req, res) => {
-  console.log("xxxx");
   const body = {
     client_id: clientId,
     client_secret: clientSecret,
@@ -845,7 +844,6 @@ app.get("/auth/oauth-callback", (req, res) => {
       authPop = "authPop";
       token = _token;
       res.cookie("auth", token);
-      console.log(parent_url);
       if (parent_url) {
         return res.redirect(parent_url);
       }
