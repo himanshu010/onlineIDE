@@ -103,7 +103,7 @@ app.post("/profile/update", async (req, res) => {
     }
     res.redirect("/user/profile");
   } catch (err) {
-    res.render("login");
+    return res.redirect("/user/login");
   }
 });
 
@@ -154,7 +154,7 @@ app.get("/user/profile", async (req, res) => {
     const decoded = jwt.verify(logToken, process.env.JWTSECRET);
     const user = await User.findById(decoded.user.id).select("-password");
     if (!user) {
-      return res.render(signUp);
+      return res.redirect("/user/signup");
     }
     if (user) {
       isLogin = true;
@@ -168,7 +168,7 @@ app.get("/user/profile", async (req, res) => {
       pic,
     });
   } catch (err) {
-    res.render("signUp");
+    return res.redirect("/user/signup");
   }
 });
 
@@ -192,7 +192,7 @@ app.get("/user/edit", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    return res.render("index");
+    return res.redirect("/");
   }
 });
 
@@ -204,7 +204,7 @@ app.get("/user/programs", async (req, res) => {
     const decoded = jwt.verify(logToken, process.env.JWTSECRET);
     const user = await User.findById(decoded.user.id).select("-password");
     if (!user) {
-      return res.render(signUp);
+      return res.redirect("/user/signup");
     }
     isLogin = true;
 
@@ -229,7 +229,7 @@ app.get("/user/programs", async (req, res) => {
       // repoLink: "https://github.com/" + username + "/" + repo,
     });
   } catch (err) {
-    res.render("signUp");
+    return res.redirect("/user/signup");
   }
 });
 

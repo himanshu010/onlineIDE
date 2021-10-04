@@ -17,7 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/editProfile.css" id="stylesheet" />
-    <title>Edit Profile</title>
+    <title>Profile</title>
 </head>
 {{> navbar isLogin=isLogin showRunButtons=showRunButtons firstName=user.firstName lastName=user.lastName}}
 
@@ -46,7 +46,7 @@
                 <div class="col-md-7">
                     <div class="p-3 py-5">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="text-right">Edit your profile</h6>
+                            <h6 class="text-right">Your profile</h6>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6"><label class="labels">First Name</label><input type="text"
@@ -66,7 +66,10 @@
                                     class="form-control" placeholder="College" name="college" value="{{user.college}}" disabled>
                             </div>
                         </div>
+                        <div style="display: flex; justify-content: space-around;">
+                        <div class="mt-5 text-center"><a href="/user/programs"><button class="btn btn-primary profile-button" style="background-color: green" type="button">All saved programs</button></a></div>
                         <div class="mt-5 text-center"><a href="/user/edit"><button class="btn btn-primary profile-button" type="button">Edit Profile</button></a></div>
+                        </div>
                     </div>
                 </div>
             </div>
