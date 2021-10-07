@@ -1,9 +1,16 @@
-app.get("/user/login", async (req, res) => {
+const express = require("express");
+const router = express.Router();
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+
+const User = require("../../../../db/models/User");
+
+router.get("/", async (req, res) => {
   const msg = req.query.msg;
   res.render("login", { msg });
 });
 
-app.post("/user/login/verify", async (req, res) => {
+router.post("/verify", async (req, res) => {
   const { email, password } = req.body;
   try {
     //See if user exists
@@ -42,3 +49,5 @@ app.post("/user/login/verify", async (req, res) => {
     res.status(500).send("server error");
   }
 });
+
+module.exports = router;

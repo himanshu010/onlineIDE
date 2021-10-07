@@ -29,8 +29,11 @@
 </head>
 
 <body class="body">
+    {{#if noPop}}
+    {{else}}
     <div id={{authPop}}></div>
     {{> authPopUp }}
+    {{/if}}
     <form action="/" method="post" id="getOutput">
         {{>navbar isLogin=isLogin showRunButtons=showRunButtons firstName=user.firstName lastName=user.lastName}}
     </form>
@@ -44,38 +47,41 @@
             </div>
         </div>
         {{/if}}
-<div>
-    <div style="width: 100%">
-        <button class="btn btn-primary" data-target="#smallModal" data-toggle="modal">Save</button></div>
-        <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
-            aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Save Program?</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" id="saveName" Placeholder="Name" class="saveInput" form="getOutput" name="name" required/>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                            Close
-                        </button>
-                        <input type="submit" value="Save Program" id="saveButton" class="btn btn-primary" form="getOutput" name="isSave">
+        <div>
+            <div style="width: 100%">
+                <button class="btn btn-primary" data-target="#smallModal" data-toggle="modal">Save</button>
+            </div>
+            <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+                aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Save Program?</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="saveName" Placeholder="Name" class="saveInput" form="getOutput"
+                                name="name" required />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                            <input type="submit" value="Save Program" id="saveButton" class="btn btn-primary"
+                                form="getOutput" name="isSave">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="switch-button" style="margin-right: 40px !important; margin-top: 20px;">
-            <label id="switch" class="switch">
-                <input type="checkbox" onchange="toggleTheme()" id="slider" />
-                <span class="slider round"></span>
-            </label>
-        </div>
+            <div class="switch-button" style="margin-right: 40px !important; margin-top: 20px;">
+                <label id="switch" class="switch">
+                    <input type="checkbox" onchange="toggleTheme()" id="slider" />
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
     </div>
     <textarea style="display: none" name="description" id="getProgram" form="getOutput"></textarea>

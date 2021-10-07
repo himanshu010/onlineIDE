@@ -11,9 +11,11 @@
 </head>
 
 <body>
+    {{#if noPop}}
+    {{else}}
     <div id={{authPop}}></div>
-    {{! prettier-ignore }}
     {{> authPopUp }}
+    {{/if}}
     <div class="header">
         <div class="header-text">
             <div class="ht-main">GitHub's Compiler</div>
