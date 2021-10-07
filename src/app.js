@@ -1,30 +1,12 @@
-const axios = require("axios");
 const path = require("path");
-const fs = require("fs");
-const { promisify } = require("util");
 const express = require("express");
 const dotenv = require("dotenv");
 const hbs = require("hbs");
-const output = require("./utils/output");
-const getRepo = require("./utils/getRepo");
-const getCode = require("./utils/getCode");
-const getLang = require("./utils/getLang");
-const sendMail = require("./utils/sendMail");
 const multer = require("multer");
-// const getUserName = require("./utils/getUserName");
 const cookieParser = require("cookie-parser");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { type } = require("os");
-const auth = require("../middleware/auth");
-const randomize = require("randomatic");
-let authPop = "noPop";
 
 //Connect Database
 const connectDB = require("../db/db");
-const User = require("../db/models/User");
-const Program = require("../db/models/Program");
-const Unverified = require("../db/models/Unverified");
 connectDB();
 
 dotenv.config({ path: "./config/dev.env" });
@@ -50,11 +32,6 @@ app.use(express.urlencoded());
 app.use(express.json());
 app.use(cookieParser());
 app.use(multer({ dest: "./uploads/" }).single("photo"));
-
-let token = null;
-let parent_url = "/";
-const clientId = process.env.CLIENT_G_ID;
-const clientSecret = process.env.CLIENT_G_SECRET;
 
 app.use("/", require("./routes/ide/ide"));
 app.use("/github", require("./routes/githubCompiler/githubCompiler"));

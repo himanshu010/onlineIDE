@@ -1,13 +1,4 @@
 const express = require("express");
-const sendMail = require("../../utils/sendMail");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const randomize = require("randomatic");
-
-const User = require("../../../db/models/User");
-const Program = require("../../../db/models/Program");
-const Unverified = require("../../../db/models/Unverified");
-
 const router = express.Router();
 
 router.use("/signup", require("./signup/signup"));
