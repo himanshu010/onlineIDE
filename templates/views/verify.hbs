@@ -26,6 +26,7 @@
                     min="0" max="9" pattern="[0-9]{1}" required><input type="text" id="digit4" name="digit4" maxLength="1"
                     size="1" min="0" max="9" pattern="[0-9]{1}" required>
                 <input type="hidden" name="email" value="{{email}}">
+                <input type="hidden" name="{{type}}" value="true">
                 <button type="submit" class="btn btn-primary btn-embossed">Verify</button>
             </form>
             <div>
@@ -33,6 +34,7 @@
                 <form id='form' method="post" action="/otp/resend">
                     <input type="hidden" name="email" value="{{email}}">
                     <input type="hidden" name="msg" value="New OTP sent to your mail">
+                    <input name="{{type}}" value="true" type="hidden">
                     <button type="submit" class="btn btn-primary btn-embossed">Resend</button>
                 </form>
             </div>

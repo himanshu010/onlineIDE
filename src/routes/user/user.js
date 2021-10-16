@@ -16,4 +16,8 @@ router.use("/programs", require("./programs/programs"));
 
 router.use("/logout", require("./logout/logout"));
 
+router.use("/forgot-password", require("./forgotPassword/forgotPassword"));
+router.use("/change-password", require("./forgotPassword/changePassword"));
+router.use("/new-password", require("./forgotPassword/newPassword"));
+
 module.exports = router;
