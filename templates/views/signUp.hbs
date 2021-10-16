@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SignUp</title>
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="/css/signUp.css">
+</head>
+<body>
+  <main>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 login-section-wrapper">
+          <div class="brand-wrapper">
+            <img src="/assets/images/logo.png" alt="logo">
+          </div>
+          <div class="login-wrapper my-auto">
+            <h1 class="login-title">Sign Up</h1>
+            <p style="color: red">{{msg}}</p>
+            <form action="/user/email/verify" id="signUpForm" method="post">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="firstName" name="firstName" id="firstName" class="form-control" placeholder="First Name" required/>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="lastName" name="lastName" id="lastName" class="form-control" placeholder="Last Name" required/>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="email@example.com" required/>
+              </div>
+              <div class="form-group mb-4">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="enter your passsword" minlength="6" required/>
+              </div>
+              <div class="form-group mb-4">
+                <label for="cpassword">Confirm Password</label>
+                <input type="password" name="cpassword" id="cpassword" class="form-control" placeholder="confirm your passsword" minlength="6" required/>
+              </div>
+              <input id="login" name="isSignUp" class="btn btn-block login-btn" type="submit" disabled/>
+            </form>
+            <p class="login-wrapper-footer-text">Already have an account? <a href="/user/login" class="text-reset">Login here</a></p>
+          </div>
+        </div>
+        <div class="col-sm-6 px-0 d-none d-sm-block">
+          <img src="/assets/images/signupbg1.jpg" alt="login image" class="login-img">
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/signUp.js"></script>
+</body>
+</html>

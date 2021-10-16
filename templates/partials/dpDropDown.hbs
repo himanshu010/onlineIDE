@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="/css/dpDropDown.css" id="stylesheet" />
+
+<div class="dpBody">
+    <div class="menu-container">
+        <button type="button" class="menu-button">
+            {{#if pic}}
+            <img src="data:{{user.photo.contentType}};base64,{{pic}}">
+            {{else}}
+            <img src="/assets/images/dp.png">
+            {{/if}}
+            <span class="title">{{firstName}} {{lastName}}</span></button>
+
+        <div class="menu-dropdown">
+
+
+            <div id="content" class="content">
+                <ul>
+                    <li><a href="/">OnlineIde</a></li>
+                    <li><a href="/github">Github's Compiler</a></li>
+                    {{#if isLogin}}
+                    <li><a href="/user/profile">Profile</a></li>
+                    <li><a href="/user/programs">Saved Programs</a></li>
+                    <li><a href="/user/logout">Logout</a></li>
+                    {{else}}
+                    <li><a href="/user/login">Login</a></li>
+                    <li><a href="/user/signup">Sign Up</a></li>
+                    {{/if}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/dpDropDown.js"></script>
+<script type="text/javascript" src="/js/switchButton.js"></script>

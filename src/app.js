@@ -1,15 +1,15 @@
 const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
-
 const hbs = require("hbs");
+const multer = require("multer");
+const cookieParser = require("cookie-parser");
+
+//Connect Database
+const connectDB = require("../db/db");
+connectDB();
 
 dotenv.config({ path: "./config/dev.env" });
-
-console.log(__dirname);
-console.log(path.join(__dirname, ".."));
-
-const output = require("./utils/output.js");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -30,44 +30,16 @@ hbs.registerPartials(partialsPath);
 app.use(express.static(publicDirectoryPath));
 app.use(express.urlencoded());
 app.use(express.json());
+app.use(cookieParser());
+app.use(multer({ dest: "./uploads/" }).single("photo"));
 
-app.get("", (req, res) => {
-  res.render("index");
-});
-
-app.post("", (req, res) => {
-  console.log(req.body);
-  output(
-    req.body.description,
-    req.body["select-language"],
-    req.body.input,
-    (error, result) => {
-      if (error) {
-        return res.render("error", {
-          error: error.code,
-          errno: error.errno,
-        });
-      }
-      var isError = false;
-      if (result.body.memory == null && result.body.cpuTime == null) {
-        isError = true;
-      }
-      console.log(result);
-      res.render("index", {
-        description: req.body.description,
-        theme: req.body["select-theme"],
-        lang: req.body["select-language"],
-        stdin: req.body.input,
-        stdout: result.body.output,
-        msg: "Compiled",
-        time: result.body.cpuTime,
-        memory: result.body.memory,
-        isError,
-      });
-    }
-  );
-});
-
+app.use("/", require("./routes/ide/ide"));
+app.use("/github", require("./routes/githubCompiler/githubCompiler"));
+app.use("/auth", require("./routes/githubAuth/auth"));
+app.use("/user", require("./routes/user/user"));
+app.use("/otp", require("./routes/otp/otp"));
+app.use("/profile", require("./routes/profile/profile"));
+app.use("/program", require("./routes/program/program"));
 
 app.get("*", (req, res) => {
   res.render("404");

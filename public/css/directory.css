@@ -1,0 +1,123 @@
+@import url(https://unpkg.com/@webpixels/css@1.0/dist/index.css);
+@font-face {
+  font-family: "product_sansbold";
+  src: url("../assets/fonts/ProductSans/product_sans_bold_700-webfont.woff2")
+      format("woff2"),
+    url("../assets/fonts/ProductSans/product_sans_bold_700-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "product_sansregular";
+  src: url("../assets/fonts/ProductSans/product_sans_400-webfont.woff2")
+      format("woff2"),
+    url("../assets/fonts/ProductSans/product_sans_400-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.theme-light {
+  --font-color-primary: black;
+  --background-color-secondary: #f5f9fc;
+  --background-color: white;
+  --image-border1: coral;
+  --color-accent-2: #b266ff;
+  --hover-color: whitesmoke;
+  --color-accent: #eaedf2;
+  --font-color-head: #525f7f;
+}
+.theme-dark {
+  --font-color-primary: white;
+  --background-color-secondary: black;
+  --background-color: #3a3a3a;
+  --image-border1: #caa81b;
+  --color-accent-2: #b3f8f8;
+  --hover-color: #242526;
+  --color-accent: #77838c;
+  --font-color-head: #ebeef2;
+}
+
+.container {
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.bg-surface-secondary {
+  min-height: 100vh;
+  background-color: var(--background-color-secondary) !important;
+}
+
+html,
+body {
+  background-color: var(--background-color) !important;
+}
+
+.type {
+  height: 25px;
+  width: 25px;
+  margin-right: 10px;
+}
+a {
+  color: var(--font-color-primary) !important;
+}
+a:hover {
+  color: var(--color-accent-2) !important;
+}
+
+tr,
+.card-header,
+h6,
+.card {
+  color: var(--font-color-primary) !important;
+  background-color: var(--background-color) !important;
+  border-color: var(--color-accent) !important;
+}
+.header {
+  width: 100%;
+  background-color: var(--background-color);
+  color: var(--font-color-head);
+}
+
+tr:hover {
+  background-color: var(--hover-color) !important;
+}
+
+.header-text {
+  margin: 10px;
+  margin-left: 40px;
+  width: auto;
+}
+
+.ht-main {
+  font-size: 30px;
+  font-weight: bolder;
+}
+
+.userInfo {
+  min-width: 100%;
+  display: inline-flex;
+  padding-left: 50px;
+  padding-bottom: 20px;
+  justify-content: space-between;
+}
+
+.dp {
+  height: 75px;
+  width: 75px;
+  border-radius: 100px;
+  border: var(--font-color-primary) 2px solid;
+}
+
+.ui-text {
+  min-height: 100%;
+  padding: 10px;
+  padding-left: 20px;
+  font-size: 15px;
+  font-weight: bolder;
+}
+body {
+  font-family: "product_sansregular" !important;
+}

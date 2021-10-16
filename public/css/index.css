@@ -1,18 +1,68 @@
 @import url("https://fonts.googleapis.com/css?family=Gruppo");
 @font-face {
   font-family: "BeautifulBloom-Alt";
-  src: url("BeautifulBloom-Alt.eot");
-  src: url("BeautifulBloom-Alt.eot?#iefix") format("embedded-opentype"),
-    url("BeautifulBloom-Alt.svg#BeautifulBloom-Alt") format("svg"),
-    url("BeautifulBloom-Alt.ttf") format("truetype"),
-    url("BeautifulBloom-Alt.woff") format("woff"),
-    url("BeautifulBloom-Alt.woff2") format("woff2");
+  src: url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.eot");
+  src: url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.eot?#iefix")
+      format("embedded-opentype"),
+    url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.svg#BeautifulBloom-Alt")
+      format("svg"),
+    url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.ttf")
+      format("truetype"),
+    url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.woff") format("woff"),
+    url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.woff2")
+      format("woff2");
   font-weight: normal;
   font-style: normal;
 }
-body {
-  height: 100vh;
+@font-face {
+  font-family: "product_sansbold";
+  src: url("../assets/fonts/ProductSans/product_sans_bold_700-webfont.woff2")
+      format("woff2"),
+    url("../assets/fonts/ProductSans/product_sans_bold_700-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
+
+@font-face {
+  font-family: "product_sansregular";
+  src: url("../assets/fonts/ProductSans/product_sans_400-webfont.woff2")
+      format("woff2"),
+    url("../assets/fonts/ProductSans/product_sans_400-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.theme-light {
+  --font-color-primary: black;
+  --background-color-secondary: #f5f9fc;
+  --bg-invert: #3a3a3a;
+  --background-color: white;
+  --image-border1: coral;
+  --color-accent-2: #b266ff;
+  --hover-color: whitesmoke;
+  --color-accent: #eaedf2;
+  --font-color-head: #525f7f;
+  --text-primary: black;
+}
+.theme-dark {
+  --text-primary: white;
+  --font-color-primary: white;
+  --background-color-secondary: black;
+  --background-color: #3a3a3a;
+  --bg-invert: white;
+  --image-border1: #caa81b;
+  --color-accent-2: #b3f8f8;
+  --hover-color: #242526;
+  --color-accent: #77838c;
+  --font-color-head: #ebeef2;
+}
+
+body {
+  font-family: "product_sansregular" !important;
+}
+
 .msg {
   font-family: "Raleway", sans-serif;
   font-size: 12px;
@@ -40,78 +90,55 @@ body {
   font-family: "BeautifulBloom-Alt";
   font-size: 25px;
   padding-left: 5px;
-  color: #4db8e2;
+  color: var(--font-color-primary);
+}
+.gc {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
+  color: #35b7ff;
 }
 a {
   text-decoration: none !important;
 }
+
+.run-bt {
+  border-radius: 25px;
+  outline: none !important;
+}
+
+.body {
+  background-color: var(--background-color-secondary);
+}
+.name {
+  font-size: 15px;
+  color: var(--text-primary);
+  font-family: "product_sansregular";
+}
 #editor {
+  /* width: 80% !important; */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 60vw;
+  max-width: 80vw;
+  min-height: 80vh;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 15px;
+  border-radius: 5px;
+}
+/* #editor {
   width: 100%;
   height: 68%;
   float: left;
   letter-spacing: 1px;
-  font-size: 15px;
-}
+  
+} */
 #getOutput {
   height: 10%;
 }
-.options {
-  text-align: center;
-  height: 100%;
-  width: 100%;
-}
-.heading {
-  margin: 10px;
-  color: lightgrey;
-  font-family: "Montserrat", sans-serif;
-  font-size: 25px;
-}
-.opContainer {
-  display: inline-flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  background-color: black;
-  height: 100% !important;
-}
-.options_selection {
-  padding: 10px;
-  border: none;
-  text-align: center;
-  -webkit-appearance: none;
-  font-family: "Montserrat", sans-serif;
-  font-size: 10px;
-  color: #333;
-  font-weight: bolder;
-  min-width: 10%;
-  background-color: #f2f2f2;
-  border-radius: 10px;
-}
 
-.options .options_selection:focus {
-  outline: none;
-}
-
-select::-ms-expand {
-  display: none;
-}
-
-#io {
-  width: 100%;
-  display: inline-flex;
-  text-align: center;
-  height: 24%;
-  background-color: rgb(39, 37, 37);
-}
-.input,
-.output {
-  width: 50%;
-  border-top: 1px grey solid;
-  border-bottom: 1px grey solid;
-}
-.input {
-  border-right: 1px grey solid;
-}
 .text {
   min-height: 15%;
   font-size: 17px;
@@ -119,28 +146,39 @@ select::-ms-expand {
   font-family: "Raleway", sans-serif;
   color: lightgrey;
 }
+
+#io {
+  min-width: 100%;
+  max-width: 100%;
+  display: inline-flex;
+  justify-content: space-around;
+}
+
 #input,
 #output {
   outline: none;
-  width: 100%;
-  min-height: 85%;
+  min-height: 20vh;
+  width: 30%;
   resize: none;
   border: none;
-  border-top: 1px gray solid;
-  background-color: #272822;
-  color: lightgrey;
-  padding: 10px;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  padding: 15px;
+  font-weight: 500;
+  font-size: 15px;
+  margin-top: 30px;
+  border-radius: 4px;
 }
 
-button {
+.but1 {
   outline: none;
   height: 40px;
   text-align: center;
   width: 100px;
   border-radius: 40px;
   background: #fff;
-  border: 2px solid#4db8e2;
-  color: #4db8e2;
+  border: 2px solid#35b7ff;
+  color: #35b7ff;
   letter-spacing: 1px;
   text-shadow: 0;
   font-size: 12px !important;
@@ -149,16 +187,16 @@ button {
   transition: all 0.25s ease;
 }
 
-button:hover {
+.but1:hover {
   color: white;
-  background: #4db8e2;
+  background: #35b7ff;
 }
 
-button:active {
+.but1:active {
   letter-spacing: 2px;
 }
 
-button:after {
+.but1:after {
   content: "▶ RUN";
 }
 
@@ -167,7 +205,7 @@ button:after {
   border-color: #bbbbbb;
   border-width: 3px;
   font-size: 0;
-  border-left-color: #4db8e2;
+  border-left-color: #35b7ff;
   animation: rotating 2s 0.25s linear infinite;
 }
 
@@ -176,14 +214,14 @@ button:after {
 }
 
 .onclic:hover {
-  color: #4db8e2;
+  color: #35b7ff;
   background: white;
 }
 
 .validate {
   font-size: 13px;
   color: white;
-  background: #4db8e2;
+  background: #35b7ff;
 }
 
 .validate:after {
@@ -213,11 +251,222 @@ button:after {
   font-family: "Raleway", sans-serif;
   padding: 10px;
 }
-/* 
+.userInfo {
+  min-width: 100%;
+  display: inline-flex;
+  padding-left: 50px;
+  padding-bottom: 20px;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.dp {
+  height: 75px;
+  width: 75px;
+  border-radius: 100px;
+  border: var(--text-primary) 2px solid;
+}
+
+.ui-text {
+  min-height: 100%;
+  padding: 10px;
+  padding-left: 20px;
+  font-size: 15px;
+  font-weight: bolder;
+}
+
 @media (max-width: 767px) {
   #editor {
-    width: 100%;
+    width: 100vw;
     font-size: 10px;
-    height: 60%;
   }
-} */
+  .name {
+    display: none;
+  }
+  .gc {
+    border: none !important;
+    padding: 0px;
+  }
+}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.svbutton {
+  appearance: none;
+  background: white;
+  border-radius: 0.25em;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 800;
+  line-height: 3em;
+  padding: 0 1em;
+}
+
+.details-modal {
+  background: #ffffff;
+  border-radius: 0.5em;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  left: 50%;
+  max-width: 90%;
+  pointer-events: none;
+  position: absolute;
+  top: 10%;
+  transform: translate(-50%, -50%);
+  width: 30em;
+  text-align: left;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.details-modal .details-modal-close {
+  align-items: center;
+  color: #111827;
+  display: flex;
+  height: 4.5em;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 4.5em;
+}
+.details-modal .details-modal-close svg {
+  display: block;
+}
+.details-modal .details-modal-title {
+  color: #111827;
+  padding: 1.5em 2em;
+  pointer-events: all;
+  position: relative;
+  width: calc(100% - 4.5em);
+}
+.details-modal .details-modal-title h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: normal;
+}
+.details-modal .details-modal-content {
+  border-top: 1px solid #e0e0e0;
+  padding: 2em;
+  pointer-events: all;
+  overflow: auto;
+}
+.details-modal-overlay {
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.8);
+  position: fixed;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+details[open] .details-modal-overlay {
+  pointer-events: all;
+  opacity: 0.5;
+}
+details summary {
+  list-style: none;
+}
+details summary:focus {
+  outline: none;
+}
+details summary::-webkit-details-marker {
+  display: none;
+}
+code {
+  font-family: Monaco, monospace;
+  line-height: 100%;
+  background-color: #2d2d2c;
+  padding: 0.1em 0.4em;
+  letter-spacing: -0.05em;
+  word-break: normal;
+  border-radius: 7px;
+  color: white;
+  font-weight: normal;
+  font-size: 1.75rem;
+  position: relative;
+  top: -2px;
+}
+.container {
+  text-align: center;
+  max-width: 40em;
+  padding: 2em;
+}
+.container > h1 {
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: normal;
+  color: #111827;
+}
+.container > p {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+.container sup {
+  font-size: 1rem;
+  margin-left: 0.25em;
+  opacity: 0.5;
+  position: relative;
+}
+.saveDiv1 {
+  width: 80%;
+  display: inline;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.input {
+  font-family: "product_sansregular";
+  position: relative;
+  width: 550px;
+  height: 50px;
+  border-radius: 6px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.input__field {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: 1px #f3f3f3 solid;
+  padding-left: 20px;
+  vertical-align: middle;
+  font-family: "product_sansregular";
+  font-size: 15px;
+  font-weight: 400;
+}
+.input__label {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #c6c6c6;
+  opacity: 0;
+  font-family: "product_sansregular";
+  font-size: 1rem;
+  font-weight: 300;
+  transition: 0.3s;
+}
+.saveButton {
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  background-color: #35b7ff;
+  color: black;
+  font-family: "product_sansregular";
+  padding: 5px 10px;
+  font-size: 15px;
+}
+
+.saveInput {
+  border: none;
+  border-bottom: 1px solid #e7e7e7;
+  border-radius: 0;
+  padding: 9px 5px;
+  min-height: 40px;
+  font-size: 18px;
+  font-weight: normal;
+  outline: none;
+}

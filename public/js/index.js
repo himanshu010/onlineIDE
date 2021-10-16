@@ -1,19 +1,38 @@
-console.log("loaded");
 onload = function () {
   // Setup
+  if (localStorage.getItem("theme") === "theme-dark") {
+    setTheme("theme-dark");
+    document.getElementById("slider").checked = true;
+  } else {
+    setTheme("theme-light");
+    document.getElementById("slider").checked = false;
+  }
   var languageOption = document.getElementById("language");
   var themeOption = document.getElementById("theme");
   var codeEditor = document.getElementById("editor");
   var textarea = $('textarea[name="description"]');
 
-  var theme = "monokai";
+  var theme = "solarized_dark";
   var lang = "C++ 17";
 
   // Ace Setup
   var editor = ace.edit("editor");
-  editor.setTheme("ace/theme/monokai");
+  editor.setTheme("ace/theme/solarized_dark");
   editor.getSession().setMode("ace/mode/c_cpp");
   editor.setShowPrintMargin(false);
+
+  function setTheme(themeName) {
+    localStorage.setItem("theme", themeName);
+    document.documentElement.className = themeName;
+  }
+
+  function toggleTheme() {
+    if (localStorage.getItem("theme") === "theme-dark") {
+      setTheme("theme-light");
+    } else {
+      setTheme("theme-dark");
+    }
+  }
 
   const cpp_string =
     "#include <iostream>\r\n" +
@@ -75,11 +94,11 @@ onload = function () {
   // Change theme dynamically
   themeOption.onchange = function () {
     switch (this.value) {
-      case "monokai":
-        changeTheme("monokai");
+      case "solarized_dark":
+        changeTheme("solarized_dark");
         break;
-      case "dawn":
-        changeTheme("dawn");
+      case "cobalt":
+        changeTheme("cobalt");
         break;
       case "github":
         changeTheme("github");
@@ -102,14 +121,14 @@ onload = function () {
       case "gruvbox":
         changeTheme("gruvbox");
         break;
-      case "solarized_dark":
-        changeTheme("solarized_dark");
+      case "monokai":
+        changeTheme("monokai");
         break;
       case "terminal":
         changeTheme("terminal");
         break;
       default:
-        changeTheme("monokai");
+        changeTheme("solarized_dark");
         break;
     }
   };
@@ -149,11 +168,11 @@ onload = function () {
 
   const ReTheme = (rTheme) => {
     switch (rTheme) {
-      case "monokai":
-        return "monokai";
+      case "solarized_dark":
+        return "solarized_dark";
         break;
-      case "dawn":
-        return "dawn";
+      case "cobalt":
+        return "cobalt";
         break;
       case "github":
         return "github";
@@ -176,14 +195,14 @@ onload = function () {
       case "gruvbox":
         return "gruvbox";
         break;
-      case "solarized_dark":
-        return "solarized_dark";
+      case "monokai":
+        return "monokai";
         break;
       case "terminal":
         return "terminal";
         break;
       default:
-        return "monokai";
+        return "solarized_dark";
         break;
     }
   };
@@ -238,7 +257,8 @@ onload = function () {
     });
     textarea.val(content);
   }
-
+  // document.getElementById("editor").style.height = "800px";
+  // document.getElementById("editor").style.width = "800px";
   var reset = document.getElementById("getScript").value;
   if (reset) {
     var lang = ReLang(document.getElementById("getLang").value);
@@ -280,4 +300,25 @@ $(function () {
       $("#button").removeClass("validate");
     }, 1250);
   }
+});
+function setTheme(themeName) {
+  localStorage.setItem("theme", themeName);
+  document.documentElement.className = themeName;
+}
+
+function toggleTheme() {
+  if (localStorage.getItem("theme") === "theme-dark") {
+    setTheme("theme-light");
+  } else {
+    setTheme("theme-dark");
+  }
+}
+
+// document.getElementById("saveButton").addEventListener("click", function () {
+//   document.getElementById("getOutput").action = "/save/program";
+//   document.getElementById("getOutput").method = "POST";
+// });
+
+document.getElementById("button").addEventListener("click", function () {
+  document.getElementById("saveName").remove();
 });

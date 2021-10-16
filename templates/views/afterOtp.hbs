@@ -1,0 +1,25 @@
+{{#if isCorrect}}
+    {{#if signup}}
+    <form id="submitAsSoon" action="/user/register" method="post">
+        <input type="hidden" name="email" value="{{email}}">
+    </form>
+    {{else}}
+    <form id="submitAsSoon" action="/user/change-password" method="post">
+        <input type="hidden" name="email" value="{{email}}">
+    </form>
+    {{/if}}
+{{else}}
+    {{#if signup}}
+    <form id="submitAsSoon" action="/otp/resend" method="post">
+        <input type="hidden" name="signup" value="true">
+        <input type="hidden" name="email" value="{{email}}">
+        <input type="hidden" name="msg" value="Incorrect OTP! New OTP sent to your mail">
+    </form>
+    {{else}}
+    <form id="submitAsSoon" action="/otp/resend" method="post">
+        <input type="hidden" name="email" value="{{email}}">
+        <input type="hidden" name="msg" value="Incorrect OTP! New OTP sent to your mail">
+    </form>
+    {{/if}}
+{{/if}}
+<script type="text/javascript" src="/js/afterOtp.js"></script>

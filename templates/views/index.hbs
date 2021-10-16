@@ -3,87 +3,112 @@
 
 <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/switchButton.css" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <link href="/css/index.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript"
         charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Raleway:wght@600&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     <title>OnlineIDE</title>
 </head>
 
 <body class="body">
-    <form action="" method="post" id="getOutput">
-        <section class="options">
-            <div class="opContainer">
-                <div class="heading">OnlineIDE<br>
-                    <a href="https://himanshuaswal.codes" target="_blank">
-                        <span class="signature">
-                            by Himanshu Aswal
-                        </span>
-                    </a>
-                </div>
-                <div>
-                    <select class="options_selection" name="select-language" id="language">
-                        <option value="cpp17">C++ 17</option>
-                        <option value="cpp">C++</option>
-                        <option value="cpp14">C++ 14</option>
-                        <option value="python2">Python2</option>
-                        <option value="python3">Python3</option>
-                        <option value="php">PHP</option>
-                        <option value="ruby">Ruby</option>
-                        <option value="java">Java</option>
-                        <option value="c">C</option>
-                    </select>
-                    <select class="options_selection" name="select-theme" id="theme">
-                        <option value="monokai">Monokai</option>
-                        <option value="dawn">Dawn</option>
-                        <option value="github">GitHub</option>
-                        <option value="solarizedlight">Solarized Light</option>
-                        <option value="sql_server">SQL Server</option>
-                        <option value="ambiance">Ambiance</option>
-                        <option value="chaos">Chaos</option>
-                        <option value="gruvbox">Gruvbox</option>
-                        <option value="solarized_dark">Solarized Dark</option>
-                        <option value="terminal">Terminal</option>
-                    </select>
-                    <button id="button" type="submit"></button>
+    {{#if noPop}}
+    {{else}}
+    <div id={{authPop}}></div>
+    {{> authPopUp }}
+    {{/if}}
+    <form action="/" method="post" id="getOutput">
+        {{>navbar isLogin=isLogin showRunButtons=showRunButtons firstName=user.firstName lastName=user.lastName}}
+    </form>
+    <div class="userInfo">
+        {{#if name}}
+        <div>
+            <div><img class="dp" src={{profilePic}}></div>
+            <div class="ui-text">
+                <div class="username"><a href={{userLink}}>{{username}}</a></div>
+                <div class="repo"><a href={{repoLink}}>{{repo}}</a></div>
+            </div>
+        </div>
+        {{/if}}
+        <div>
+            <div style="width: 100%">
+                <button class="btn btn-primary" data-target="#smallModal" data-toggle="modal">Save</button>
+            </div>
+            <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+                aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Save Program?</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="saveName" Placeholder="Name" class="saveInput" form="getOutput"
+                                name="name" required />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                            <input type="submit" value="Save Program" id="saveButton" class="btn btn-primary"
+                                form="getOutput" name="isSave">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-    </form>
+
+            <div class="switch-button" style="margin-right: 40px !important; margin-top: 20px;">
+                <label id="switch" class="switch">
+                    <input type="checkbox" onchange="toggleTheme()" id="slider" />
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
     <textarea style="display: none" name="description" id="getProgram" form="getOutput"></textarea>
     <textarea style="display: none" id="getScript" name="getScript">{{this.description}}</textarea>
     <textarea style="display: none" id="getLang" name="getLang">{{this.lang}}</textarea>
     <textarea style="display: none" id="getTheme" name="getTheme">{{this.theme}}</textarea>
-    {{#if this.isError}}
+    {{#if isSave}}
+    <div class="msg" id="msg" style="background-color: #007FFF"> Saved</div>
+    {{else if this.isError}}
     <div class="msg" id="msg" style="background-color: red"> ⚠️ Error</div>
     {{else if this.msg}}
     <div class="msg" id="msg">{{this.msg}} <br />
         CPU Time : {{this.time}} sec(s)<br />
         Memory : {{this.memory}} kilobyte(s)</div>
+    {{else if isJava}}
+    <div class="msg" id="msg">Class should be "main"</div>
     {{/if}}
     <div id="io">
-        <div class="input">
-            <div class="text">Input:</div>
-            <textarea id="input" name="input" form="getOutput">{{this.stdin}}</textarea>
-        </div>
-        <div class="output">
-            <div class="text">Output:</div>
-            <textarea id="output" name="output">{{this.stdout}}</textarea>
-        </div>
+        <textarea placeholder="Input Text Here..." id="input" name="input" form="getOutput">{{this.stdin}}</textarea>
+        <textarea placeholder="Output will be shown here..." id="output" name="output">{{this.stdout}}</textarea>
     </div>
     <div id="editor"></div>
-    {{!-- {{>footer}} --}}
     <script type="text/javascript">
         $('#msg').fadeOut(4000, function () {
             $(this).remove();
         });</script>
-
+    <script type="text/javascript" src="/js/index.js"></script>
 </body>
 
 </html>

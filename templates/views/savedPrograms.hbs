@@ -1,0 +1,65 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/savedPrograms.css" type="text/css" />
+    <link rel="stylesheet" href="/css/switchButton.css" type="text/css" />
+    <title>Saved Programs</title>
+</head>
+
+<body>
+    <div style="height: 10%">
+        {{>navbar isLogin=isLogin showRunButtons=showRunButtons firstName=user.firstName lastName=user.lastName}}
+        </div>
+
+    <div class="header">
+        <div class="header-text">
+            <div class="ht-main">All Saved Programs</div>
+        </div>
+    </div>
+    <div class="p-10 bg-surface-secondary">
+        <div class="userInfo">
+            <div>
+                {{#if pic}}
+                <div><a href="/user/profile"><img class="dp" src="data:{{user.photo.contentType}};base64,{{pic}}"></a></div>
+                {{/if}}
+                <div class="ui-text">
+                    <div class="username"><a href={{userLink}}>{{username}}</a></div>
+                    <div class="repo"><a href={{repoLink}}>{{repo}}</a></div>
+                </div>
+            </div>
+            <div class="switch-button" style="margin-right: 40px !important">
+                <label id="switch" class="switch">
+                    <input type="checkbox" onchange="toggleTheme()" id="slider" />
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="url">{{structure}}</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-nowrap">
+                        <tbody>
+                            {{#each data}}
+                            <tr>
+                                <td data-label="Title">
+                                    <img class="type" alt="file" src="/assets/images/file.png" />
+                                    <a style="font-size:medium" href={{this.url}}>{{this.name}}</a>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{>footer}}
+</body>
+<script type="text/javascript" src="/js/switchButton.js"></script>
+</html>

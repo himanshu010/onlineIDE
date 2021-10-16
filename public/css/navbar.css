@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css?family=Gruppo");
+@font-face {
+  font-family: "BeautifulBloom-Alt";
+  src: url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.eot");
+  src: url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.eot?#iefix")
+      format("embedded-opentype"),
+    url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.svg#BeautifulBloom-Alt")
+      format("svg"),
+    url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.ttf")
+      format("truetype"),
+    url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.woff") format("woff"),
+    url("../assets/fonts/BeautifulBloom/BeautifulBloom-Alt.woff2")
+      format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "product_sansbold";
+  src: url("../assets/fonts/ProductSans/product_sans_bold_700-webfont.woff2")
+      format("woff2"),
+    url("../assets/fonts/ProductSans/product_sans_bold_700-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "product_sansregular";
+  src: url("../assets/fonts/ProductSans/product_sans_400-webfont.woff2")
+      format("woff2"),
+    url("../assets/fonts/ProductSans/product_sans_400-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+.theme-light {
+  --font-color-primary: black;
+  --background-color-secondary: #f5f9fc;
+  --bg-invert: #3a3a3a;
+  --background-color: white;
+  --image-border1: coral;
+  --color-accent-2: #b266ff;
+  --hover-color: whitesmoke;
+  --color-accent: #eaedf2;
+  --font-color-head: #525f7f;
+  --text-primary: black;
+}
+.theme-dark {
+  --text-primary: white;
+  --font-color-primary: white;
+  --background-color-secondary: black;
+  --background-color: #3a3a3a;
+  --bg-invert: white;
+  --image-border1: #caa81b;
+  --color-accent-2: #b3f8f8;
+  --hover-color: #242526;
+  --color-accent: #77838c;
+  --font-color-head: #ebeef2;
+}
+.options {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+}
+a {
+  text-decoration: none !important;
+  color: #007fff;
+}
+
+.heading {
+  margin: 10px;
+  color: var(--text-primary);
+  font-family: "product_sansbold", sans-serif;
+  font-size: 25px;
+}
+.opContainer {
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--background-color);
+  height: 100% !important;
+}
+.options_selection {
+  padding: 10px;
+  border: none;
+  text-align: center;
+  -webkit-appearance: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  color: #333;
+  font-weight: bolder;
+  min-width: 10%;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+}
+
+.options .options_selection:focus {
+  outline: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+.signature {
+  font-family: "BeautifulBloom-Alt";
+  font-size: 25px;
+  padding-left: 5px;
+  color: var(--font-color-primary);
+}
+.gc {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px;
+  color: #35b7ff;
+}
