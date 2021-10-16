@@ -37,7 +37,7 @@ router.post("/verify", async (req, res) => {
         } else {
           const salt = await bcrypt.genSalt(10);
           password = await bcrypt.hash(password, salt);
-          let newUnVerUser = await Unverified.findOneAndUpdate(
+          await Unverified.findOneAndUpdate(
             { email },
             { firstName, lastName, password, otp },
             {
@@ -52,9 +52,46 @@ router.post("/verify", async (req, res) => {
         res.render("verify", {
           email: unVerUser.email,
           msg: "OTP sent to your mail",
+          type: "signup",
         });
-      } catch (err) {}
+      } catch (err) {
+        res.redirect("/user/login");
+      }
     } else if (isForgotPassword) {
+      try {
+        const email = req.body.email;
+        if (!email) {
+          return res.redirect("/user/login");
+        }
+        let user = await User.findOne({ email }).select("-password");
+        let unVerUser = await Unverified.findOne({ email }).select("-password");
+        if (!user) {
+          res.redirect("/user/login/?msg=User doesn't exists");
+        }
+
+        await Unverified.findOneAndUpdate(
+          { email },
+          { otp },
+          {
+            new: true,
+          }
+        );
+
+        const subject =
+          "[OnlineIde] Your otp to change your password is : " + unVerUser.otp;
+        const text =
+          'A "forgot password" request has been initiated by your account. Your OTP  is ' +
+          unVerUser.otp;
+
+        sendMail(unVerUser.email, subject, text);
+        res.render("verify", {
+          email: unVerUser.email,
+          msg: "OTP sent to your mail",
+          type: "forgot-password",
+        });
+      } catch (err) {
+        return res.redirect("/user/signup");
+      }
     }
   } catch (err) {
     if (isSignUp) {

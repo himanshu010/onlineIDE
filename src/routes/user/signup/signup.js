@@ -11,10 +11,29 @@ router.post("/check", async (req, res) => {
     const { digit1, digit2, digit3, digit4, email } = req.body;
     const filled = digit1 + digit2 + digit3 + digit4;
     const unVerUser = await Unverified.findOne({ email });
-    if (filled == unVerUser.otp) {
-      res.render("afterOtp", { email, isCorrect: true });
+
+    let signup = false;
+    let forgotPassword = false;
+    if (req.body.signup) {
+      signup = true;
     } else {
-      res.render("afterOtp", { email, isCorrect: false });
+      forgotPassword = true;
+    }
+
+    if (filled == unVerUser.otp) {
+      res.render("afterOtp", {
+        email,
+        isCorrect: true,
+        forgotPassword,
+        signup,
+      });
+    } else {
+      res.render("afterOtp", {
+        email,
+        isCorrect: false,
+        forgotPassword,
+        signup,
+      });
     }
   } catch (err) {
     res.redirect("/user/signup");
