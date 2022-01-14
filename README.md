@@ -11,7 +11,7 @@
   <h1 style>Online Ide</h1>
   <p>
     <strong>Online Ide is a place to compile, debug, run and share your code.</strong><br>
-    Avaible languages are C, C++, Java, Python, JavaScript, Ruby, PHP, Go, Rust, Kotlin, Swift, C#, and more<br>
+    Avaible languages are C, C++, Java, Python and more<br>
     Syntax highlighting is supported for all languages.
   </p>
 </div>
@@ -24,7 +24,7 @@
 
 <h2 align="center">Introduction</h2>
 
-Online Ide is created to provide a reliable online platform for developers debugm, run and share their code. It does have some features to make it easier for developers to import and share their code, like [Github's Compiler](githubs-compiler), where you can compile and run your code in a single click from github.
+Online Ide is created to provide a reliable online platform for developers debugm, run and share their code. It does have some features to make it easier for developers to import and share their code, like [Github's Compiler][githubs-compiler], where you can compile and run your code in a single click from github.
 
 <h2 align="center">Technologies Used</h2>
 
