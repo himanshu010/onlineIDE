@@ -64,6 +64,10 @@ Online Ide is created to provide a reliable online platform for developers debug
 | :--------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------: |
 | <a href="https://www.heroku.com/"><img width="300" src="https://cdn.worldvectorlogo.com/logos/heroku-1.svg"></a> | Heroku is a platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud |
 
+### License
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhimanshu010%2FonlineIDE.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhimanshu010%2FonlineIDE?ref=badge_large)
+
 [website-badge]: https://img.shields.io/website?down_message=offline&up_message=online&url=http%3A%2F%2Fidenv.herokuapp.com%2F
 [website]: https://idenv.herokuapp.com
 [issues-badge]: https://img.shields.io/github/issues/himanshu010/onlineIDE
