@@ -73,6 +73,7 @@ a {
   color: var(--text-primary);
   font-family: "product_sansbold", sans-serif;
   font-size: 25px;
+  display: inline-block;
 }
 .opContainer {
   display: inline-flex;
@@ -114,4 +115,27 @@ select::-ms-expand {
   border-radius: 3px;
   padding: 5px;
   color: #35b7ff;
+}
+
+.main-logo {
+  width: 40px;
+  height: 30px;
+}
+
+@media (min-width: 641px) {
+  .main-logo {
+    width: 65px;
+    height: auto;
+    margin-left: 5px;
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: 641px) {
+  .signature {
+    font-size: 19px;
+  }
+  .heading {
+    font-size: 18px;
+  }
 }
