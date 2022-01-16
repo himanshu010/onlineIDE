@@ -22,6 +22,7 @@ router.post("/verify", async (req, res) => {
         if (user) {
           res.status(400);
           res.redirect("/user/signup/?msg=User already exists");
+          return;
         }
         if (!unVerUser) {
           unVerUser = new Unverified({
