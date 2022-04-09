@@ -23347,7 +23347,6 @@ body > div.preloader {
   background: white;
   width: 100%;
   height: 100%;
-  z-index: 1071;
   opacity: 0;
   transition: opacity 0.5s ease;
   overflow: hidden;

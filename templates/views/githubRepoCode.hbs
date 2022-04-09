@@ -38,11 +38,15 @@
 </head>
 
 <body>
-     {{#if noPop}}
-    {{else}}
-    <div id={{authPop}}></div>
-    {{> authPopUp }}
-    {{/if}}
+  {{#if noPop}}
+  {{else}}
+  <div id={{authPop}}></div>
+  {{> authPopUp }}
+  {{/if}}
+  <div style="z-index: 1000 !important; position: relative; margin-right: 10px;">
+    {{>navbar isLogin=isLogin showRunButtons=showRunButtons firstName=user.firstName lastName=user.lastName}}
+  </div>
+
   <!-- Preloader -->
   <div class="preloader">
     <div class="spinner-border text-primary" role="status">
@@ -52,7 +56,7 @@
   <div class="cont big-logo">
     Github's Compiler
   </div>
-  <section class="slice py-7">
+  <section class="py-7">
     <div class="container">
       <div class="row row-grid align-items-center">
         <div class="col-12 col-md-5 col-lg-6 order-md-2 text-center">

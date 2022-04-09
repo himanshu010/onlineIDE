@@ -9,8 +9,6 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("../db/db");
 connectDB();
 
-dotenv.config({ path: "./config/dev.env" });
-
 const app = express();
 const port = process.env.PORT || 3000;
 
