@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const output = require("../../utils/output");
 const jwt = require("jsonwebtoken");
 
 const User = require("../../../db/models/User");
@@ -9,14 +8,6 @@ const Program = require("../../../db/models/Program");
 router.get("/:id", async (req, res) => {
   let isLogin = false;
   let pic;
-  const result = await output(
-    req.body.description,
-    req.body["select-language"],
-    req.body.input
-  );
-  if (result.body.memory == null && result.body.cpuTime == null) {
-    isError = true;
-  }
   try {
     const program = await Program.findById(req.params.id);
     const showRunButtons = true;

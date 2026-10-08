@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/css/error.css" type="text/css" />
   <script>
     function get_action(form) {
-      var url = window.location.href
+      var url = window.location.pathname + window.location.search
       document.getElementById("parent_url").value = url;
     }
   </script>

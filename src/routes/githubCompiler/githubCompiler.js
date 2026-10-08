@@ -3,8 +3,6 @@ const getRepo = require("../../utils/getRepo");
 const getCode = require("../../utils/getCode");
 const getLang = require("../../utils/getLang");
 const jwt = require("jsonwebtoken");
-let authPop = "noPop";
-let noPop = false;
 
 const User = require("../../../db/models/User");
 const router = express.Router();
@@ -16,9 +14,7 @@ function eventSorter(a, b) {
 }
 
 router.get("/", async (req, res) => {
-  var token = req.cookies.auth;
-  authPop = req.cookies.authPop;
-  var info = await getCode(token);
+  const authPop = req.cookies.authPop;
   res.render("githubRepoCode", { authPop });
   if (authPop === "authPop") {
     res.cookie("authPop", "noPop");
@@ -26,6 +22,8 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/*", async (req, res) => {
+  const authPop = req.cookies.authPop;
+  let noPop = false;
   let pic;
   let decoded;
   let isLogin = false;
@@ -156,6 +154,8 @@ router.get("/*", async (req, res) => {
 });
 
 router.post("/*", async (req, res) => {
+  const authPop = req.cookies.authPop;
+  let noPop = false;
   var token = req.cookies.auth;
   var structure = req.originalUrl.substring(7);
   var arr = structure.split("/");

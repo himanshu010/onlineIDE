@@ -3,17 +3,25 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 
 const User = require("../../../../db/models/User");
+const Unverified = require("../../../../db/models/Unverified");
+const { authCookie } = require("../../../utils/cookies");
+const { verifyOtpToken } = require("../../../utils/otpToken");
 
 router.post("/", async (req, res) => {
-  const { email } = req.body;
+  const { email, token } = req.body;
   try {
-    //See if user exists
-    let unVerUser = await User.findOne({ email }).select("-password");
-    if (unVerUser) {
-      res.status(400);
-      res.redirect("/user/signup/?msg=User already exists");
+    if (!verifyOtpToken(token, email, "signup")) {
+      return res.redirect("/user/signup/?msg=Please verify your email first");
     }
-    unVerUser = await Unverified.findOne({ email });
+    //See if user exists
+    const existing = await User.findOne({ email }).select("-password");
+    if (existing) {
+      return res.redirect("/user/signup/?msg=User already exists");
+    }
+    const unVerUser = await Unverified.findOne({ email });
+    if (!unVerUser) {
+      return res.redirect("/user/signup");
+    }
     let user = new User({
       firstName: unVerUser.firstName,
       lastName: unVerUser.lastName,
@@ -33,11 +41,11 @@ router.post("/", async (req, res) => {
       payload,
       process.env.JWTSECRET,
       { expiresIn: 360000 },
-      (err, token) => {
+      (err, loginToken) => {
         if (err) {
-          throw err;
+          return res.status(500).send("server error");
         }
-        res.cookie("logToken", token);
+        res.cookie("logToken", loginToken, authCookie(req));
         res.redirect("/user/profile");
       }
     );

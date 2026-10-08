@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const User = require("../../../../db/models/User");
+const { authCookie } = require("../../../utils/cookies");
 
 router.get("/", async (req, res) => {
   const msg = req.query.msg;
@@ -39,9 +40,9 @@ router.post("/verify", async (req, res) => {
       { expiresIn: 360000 },
       (err, token) => {
         if (err) {
-          throw err;
+          return res.status(500).send("server error");
         }
-        res.cookie("logToken", token);
+        res.cookie("logToken", token, authCookie(req));
         res.redirect("/user/profile");
       }
     );

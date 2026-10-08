@@ -11,6 +11,8 @@ connectDB();
 
 const app = express();
 const port = process.env.PORT || 3000;
+// Render terminates HTTPS in front of the app; this lets req.secure and req.protocol see it.
+app.set("trust proxy", 1);
 
 //defining paths for handlebars
 const publicDirectoryPath = path.join(__dirname, "../public");
@@ -43,6 +45,7 @@ app.get("*", (req, res) => {
   res.render("404");
 });
 
-app.listen(port, () => {
+// HOST is unset on Render (listen on every interface); local runs set 127.0.0.1.
+app.listen(port, process.env.HOST, () => {
   console.log("server is up on port " + port);
 });
