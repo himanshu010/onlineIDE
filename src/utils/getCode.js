@@ -1,11 +1,14 @@
 var request = require("postman-request");
 
+// GITHUB_API_URL points local test runs at a stand-in; production leaves it unset.
+const GITHUB_API = process.env.GITHUB_API_URL || "https://api.github.com";
+
 async function getCode(username, repo, structure, token) {
   if (token) {
     var b_token = "Bearer " + token;
     const options = {
       url:
-        "https://api.github.com/repos/" +
+        GITHUB_API + "/repos/" +
         username +
         "/" +
         repo +
@@ -34,7 +37,7 @@ async function getCode(username, repo, structure, token) {
   } else {
     const options = {
       url:
-        "https://api.github.com/repos/" +
+        GITHUB_API + "/repos/" +
         username +
         "/" +
         repo +

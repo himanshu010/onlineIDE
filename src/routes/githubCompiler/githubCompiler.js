@@ -2,266 +2,97 @@ const express = require("express");
 const getRepo = require("../../utils/getRepo");
 const getCode = require("../../utils/getCode");
 const getLang = require("../../utils/getLang");
-const jwt = require("jsonwebtoken");
+const renderApp = require("../../utils/renderApp");
 
-const User = require("../../../db/models/User");
 const router = express.Router();
 
-const port = process.env.PORT || 3000;
+router.get("/", (req, res) => renderApp(req, res, "github", { githubSignedIn: Boolean(req.cookies.auth) }));
 
-function eventSorter(a, b) {
-  return a.isDir > b.isDir ? -1 : 1;
+const decode = (segment) => {
+  try {
+    return decodeURIComponent(segment);
+  } catch (err) {
+    return segment;
+  }
+};
+
+// GitHub's error body ({ message, documentation_url }) when a raw file request fails.
+const githubError = (body) => {
+  if (typeof body !== "string" || !body.startsWith("{")) return null;
+  try {
+    const parsed = JSON.parse(body);
+    return parsed && parsed.message && parsed.documentation_url ? parsed.message : null;
+  } catch (err) {
+    return null;
+  }
+};
+
+function renderGithubError(req, res, message) {
+  const rateExceeded = message.startsWith("API rate limit exceeded");
+  if (rateExceeded) return renderApp(req, res, "error", { error: message, rateExceeded }, { status: 429 });
+  if (message === "Not Found") {
+    return renderApp(req, res, "error", { error: "There’s no public repository, folder or file at this address on GitHub." }, { status: 404 });
+  }
+  return renderApp(req, res, "error", { error: message }, { status: 502 });
 }
 
-router.get("/", async (req, res) => {
-  const authPop = req.cookies.authPop;
-  res.render("githubRepoCode", { authPop });
-  if (authPop === "authPop") {
-    res.cookie("authPop", "noPop");
+// /github/<user>/<repo>/<path…>: a folder lists its contents, a file opens in the IDE.
+async function browse(req, res) {
+  const token = req.cookies.auth;
+  const [username, repo, ...rest] = req.path.split("/").filter(Boolean);
+  if (!username || !repo) return res.redirect("/github");
+  // The parts go into a GitHub API URL, so they must stay a repository and a path inside it.
+  if (!/^[A-Za-z0-9-]+$/.test(username) || !/^[A-Za-z0-9._-]+$/.test(repo) || rest.some((segment) => segment === "." || segment === "..")) {
+    return renderApp(req, res, "notFound", {}, { status: 404 });
   }
-});
-
-router.get("/*", async (req, res) => {
-  const authPop = req.cookies.authPop;
-  let noPop = false;
-  let pic;
-  let decoded;
-  let isLogin = false;
-  var token = req.cookies.auth;
-  var structure = req.originalUrl.substring(7);
-  var arr = structure.split("/");
-  const username = arr[1];
-  const repo = arr[2];
-  structure = "";
-  for (var i = 3; i < arr.length; i++) {
-    structure = structure + arr[i] + "/";
-  }
+  const structure = rest.map((segment) => `${segment}/`).join("");
+  const path = rest.map(decode).join("/");
+  const base = `/github/${username}/${repo}`;
+  const avatar = `https://github.com/${encodeURIComponent(username)}.png`;
   try {
-    const logToken = req.cookies["logToken"];
-    let user;
-    if (logToken) {
-      decoded = jwt.verify(logToken, process.env.JWTSECRET);
-      user = await User.findById(decoded.user.id).select("-password");
+    const listing = await getRepo(username, repo, structure, token);
+    if (Array.isArray(listing)) {
+      const entries = listing
+        .map((item) => ({
+          name: item.name,
+          type: item.type === "dir" ? "dir" : "file",
+          href: `${base}/${item.path.split("/").map(encodeURIComponent).join("/")}`,
+        }))
+        .sort((a, b) => (a.type === b.type ? 0 : a.type === "dir" ? -1 : 1));
+      return renderApp(
+        req,
+        res,
+        "directory",
+        { username: decode(username), repo: decode(repo), path, avatar, entries, githubSignedIn: Boolean(token) },
+        { title: `${decode(repo)}${path ? `/${path}` : ""} · GitHub’s Compiler` }
+      );
+    }
+    if (listing && listing.message) return renderGithubError(req, res, listing.message);
 
-      if (user.photo.data)
-        pic = new Buffer.from(user.photo.data).toString("base64");
-    }
-    if (user) {
-      isLogin = true;
-    }
-    var output = await getRepo(username, repo, structure, token);
-    var parentURL =
-      req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
-    var link =
-      req.protocol +
-      "://" +
-      req.hostname +
-      (port != 3000 ? "" : ":" + port) +
-      "/github" +
-      req.path;
-
-    if (link[link.length - 1] != "/") {
-      link = link + "/";
-    }
-    for (var i = 0; i < output.length; i++) {
-      var splitArr = output[i].url.split("/");
-      var name = splitArr[splitArr.length - 1].split("?")[0];
-      output[i].url = link + name;
-    }
-    for (var i = 0; i < output.length; i++) {
-      if (output[i].type === "dir") {
-        output[i].isDir = 1;
-      } else {
-        output[i].isDir = 0;
-      }
-    }
-
-    var curDir;
-    if (structure.length === 0) {
-      curDir = repo;
-    } else {
-      curDir = arr[arr.length - 1];
-    }
-    if (Object.prototype.toString.call(output) === "[object Array]") {
-      output.sort(eventSorter);
-      if (req.cookies.authPop == "noPop") {
-        noPop = true;
-      }
-      res.render("directory", {
-        data: output,
-        structure: decodeURI("./" + repo + "/" + structure),
-        curDir: decodeURI(curDir),
-        username,
-        repo,
-        profilePic: "https://github.com/" + username + ".png",
-        userLink: "https://github.com/" + username,
-        repoLink: "https://github.com/" + username + "/" + repo,
-        authPop,
-        noPop,
-      });
-      if (authPop === "authPop") {
-        res.cookie("authPop", "noPop");
-      }
-    } else if (output.message) {
-      let rateExd = 0;
-      if (output.message.length >= 23) {
-        if (output.message.substring(0, 23) === "API rate limit exceeded") {
-          rateExd = 1;
-        }
-      }
-      res.render("error", { error: output.message, rateExd });
-    } else {
-      var ext = output.name.split(".").pop();
-      var code = await getCode(username, repo, structure, token);
-      if (code.message) {
-        return res.render("error", { error: code.message });
-      }
-      var isJava = 0;
-      if (ext == "java") {
-        isJava = 1;
-      }
-      const showRunButtons = true;
-      if (req.cookies.authPop == "noPop") {
-        noPop = true;
-      }
-      res.render("index", {
-        theme: "solarized_dark",
-        description: code,
-        lang: getLang(ext),
-        profilePic: "https://github.com/" + username + ".png",
-        userLink: "https://github.com/" + username,
-        repoLink: "https://github.com/" + username + "/" + repo,
-        postUrl: "/",
-        name: decodeURI("./" + repo + "/" + structure),
-        username,
-        parentURL: parentURL,
-        repo,
-        isJava,
-        authPop,
-        noPop,
-        isLogin,
-        pic,
-        showRunButtons,
-        user,
-      });
-    }
-    if (authPop === "authPop") {
-      res.cookie("authPop", "noPop");
-    }
+    const ext = listing.name.split(".").pop();
+    const code = await getCode(username, repo, structure, token);
+    const codeError = githubError(code);
+    if (codeError) return renderGithubError(req, res, codeError);
+    return renderApp(
+      req,
+      res,
+      "ide",
+      {
+        code,
+        language: getLang(ext),
+        github: { username: decode(username), repo: decode(repo), path, avatar },
+        isJava: ext === "java",
+        runnable: Boolean(getLang(ext)),
+        githubSignedIn: Boolean(token),
+      },
+      { title: `${listing.name} · OnlineIDE` }
+    );
   } catch (error) {
-    res.render("error", { error });
+    return renderApp(req, res, "error", { error: error.message || "GitHub could not be reached." }, { status: 502 });
   }
-});
+}
 
-router.post("/*", async (req, res) => {
-  const authPop = req.cookies.authPop;
-  let noPop = false;
-  var token = req.cookies.auth;
-  var structure = req.originalUrl.substring(7);
-  var arr = structure.split("/");
-  const username = arr[1];
-  const repo = arr[2];
-  structure = "";
-  for (var i = 3; i < arr.length; i++) {
-    structure = structure + arr[i] + "/";
-  }
-  try {
-    var output = await getRepo(username, repo, structure, token);
-    var parentURL =
-      req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
-    var link =
-      req.protocol +
-      "://" +
-      req.hostname +
-      (port != 3000 ? "" : ":" + port) +
-      "/github" +
-      req.path;
-
-    if (link[link.length - 1] != "/") {
-      link = link + "/";
-    }
-
-    for (var i = 0; i < output.length; i++) {
-      var splitArr = output[i].url.split("/");
-      var name = splitArr[splitArr.length - 1].split("?")[0];
-      output[i].url = link + name;
-    }
-    for (var i = 0; i < output.length; i++) {
-      if (output[i].type === "dir") {
-        output[i].isDir = 1;
-      } else {
-        output[i].isDir = 0;
-      }
-    }
-
-    var curDir;
-    if (structure.length === 0) {
-      curDir = repo;
-    } else {
-      curDir = arr[arr.length - 1];
-    }
-    if (Object.prototype.toString.call(output) === "[object Array]") {
-      output.sort(eventSorter);
-      if (req.cookies.authPop == "noPop") {
-        noPop = true;
-      }
-      console;
-      res.render("directory", {
-        data: output,
-        structure: decodeURI("./" + repo + "/" + structure),
-        curDir: decodeURI(curDir),
-        username,
-        repo,
-        profilePic: "https://github.com/" + username + ".png",
-        userLink: "https://github.com/" + username,
-        repoLink: "https://github.com/" + username + "/" + repo,
-        authPop,
-        noPop,
-      });
-    } else if (output.message) {
-      let rateExd = 0;
-      if (output.message.length >= 23) {
-        if (output.message.substring(0, 23) === "API rate limit exceeded") {
-          rateExd = 1;
-        }
-      }
-      res.render("error", { error: output.message, rateExd });
-    } else {
-      var ext = output.name.split(".").pop();
-      var code = await getCode(username, repo, structure, token);
-      if (code.message) {
-        return res.render("error", { error: code.message });
-      }
-      var isJava = 0;
-      if (ext == "java") {
-        isJava = 1;
-      }
-      if (req.cookies.authPop == "noPop") {
-        noPop = true;
-      }
-      res.render("index", {
-        theme: "solarized_dark",
-        description: code,
-        lang: getLang(ext),
-        profilePic: "https://github.com/" + username + ".png",
-        userLink: "https://github.com/" + username,
-        repoLink: "https://github.com/" + username + "/" + repo,
-        postUrl: "/",
-        name: decodeURI("./" + repo + "/" + structure),
-        username,
-        parentURL: parentURL,
-        repo,
-        isJava,
-        authPop,
-        noPop,
-      });
-    }
-    if (authPop === "authPop") {
-      res.cookie("authPop", "noPop");
-    }
-  } catch (error) {
-    res.render("error", { error });
-  }
-});
+router.get("/*", browse);
+router.post("/*", browse);
 
 module.exports = router;

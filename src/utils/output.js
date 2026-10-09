@@ -16,7 +16,8 @@ async function output(script, language, stdin) {
     // Do async job
     request(
       {
-        url: "https://api.jdoodle.com/v1/execute",
+        // JDOODLE_URL points local test runs at a stand-in; production leaves it unset.
+        url: process.env.JDOODLE_URL || "https://api.jdoodle.com/v1/execute",
         method: "POST",
         json: program,
       },

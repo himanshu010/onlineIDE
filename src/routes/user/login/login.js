@@ -5,10 +5,11 @@ const bcrypt = require("bcryptjs");
 
 const User = require("../../../../db/models/User");
 const { authCookie } = require("../../../utils/cookies");
+const renderApp = require("../../../utils/renderApp");
 
 router.get("/", async (req, res) => {
   const msg = req.query.msg;
-  res.render("login", { msg });
+  renderApp(req, res, "login", { msg });
 });
 
 router.post("/verify", async (req, res) => {

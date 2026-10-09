@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}" />
+    <meta name="theme-color" content="#050506" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      try { if (localStorage.getItem("theme") === "theme-light") document.documentElement.classList.remove("dark"); } catch (e) {}
+    </script>
+    {{#each fonts}}<link rel="preload" href="{{this}}" as="font" type="font/woff2" crossorigin />{{/each}}
+    {{#each css}}<link rel="stylesheet" href="{{this}}" />{{/each}}
+    {{#each preload}}<link rel="modulepreload" href="{{this}}" />{{/each}}
+    <script type="module" src="{{js}}"></script>
+  </head>
+  <body>
+    <div id="root"><div class="boot"></div></div>
+    <script id="__app" type="application/json">{{{data}}}</script>
+    <noscript><p style="font-family: sans-serif; padding: 2rem">OnlineIDE needs JavaScript to edit and run code.</p></noscript>
+  </body>
+</html>

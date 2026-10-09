@@ -7,6 +7,7 @@ const randomize = require("randomatic");
 
 const User = require("../../../../db/models/User");
 const Unverified = require("../../../../db/models/Unverified");
+const renderApp = require("../../../utils/renderApp");
 
 router.post("/verify", async (req, res) => {
   const otp = randomize("0", 4);
@@ -50,7 +51,7 @@ router.post("/verify", async (req, res) => {
           "[OnlineIde] Otp for registration is : " + unVerUser.otp;
         const text = "Your OTP for registeration is " + unVerUser.otp;
         sendMail(unVerUser.email, subject, text);
-        res.render("verify", {
+        renderApp(req, res, "verify", {
           email: unVerUser.email,
           msg: "OTP sent to your mail",
           type: "signup",
@@ -85,7 +86,7 @@ router.post("/verify", async (req, res) => {
           unVerUser.otp;
 
         sendMail(unVerUser.email, subject, text);
-        res.render("verify", {
+        renderApp(req, res, "verify", {
           email: unVerUser.email,
           msg: "OTP sent to your mail",
           type: "forgot-password",

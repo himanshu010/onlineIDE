@@ -1,58 +1,24 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
+const renderApp = require("../../utils/renderApp");
 
-const User = require("../../../db/models/User");
 const Program = require("../../../db/models/Program");
 
+// A saved program opens in the IDE for anyone with its link (sharing is the point of the link).
 router.get("/:id", async (req, res) => {
-  let isLogin = false;
-  let pic;
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return renderApp(req, res, "notFound", {}, { status: 404 });
+  }
   try {
     const program = await Program.findById(req.params.id);
-    const showRunButtons = true;
-    try {
-      const logToken = req.cookies["logToken"];
-      const decoded = jwt.verify(logToken, process.env.JWTSECRET);
-      const user = await User.findById(decoded.user.id).select("-password");
-
-      if (user.photo.data)
-        pic = new Buffer.from(user.photo.data).toString("base64");
-      if (user) {
-        isLogin = true;
-      }
-
-      res.render("index", {
-        description: program.description,
-        theme: req.body["select-theme"],
-        lang: program.language,
-        stdin: program.input,
-        isLogin,
-        pic,
-        showRunButtons,
-        user,
-        // stdout: result.body.output,
-        // msg: "Compiled",
-        // time: result.body.cpuTime,
-        // memory: result.body.memory,
-        // isError,
-        // parentURL: parentURL,
-      });
-    } catch (err) {
-      res.render("index", {
-        description: program.description,
-        theme: req.body["select-theme"],
-        lang: program.language,
-        stdin: program.input,
-        showRunButtons,
-        // stdout: result.body.output,
-        // msg: "Compiled",
-        // time: result.body.cpuTime,
-        // memory: result.body.memory,
-        // isError,
-        // parentURL: parentURL,
-      });
-    }
+    if (!program) return renderApp(req, res, "notFound", {}, { status: 404 });
+    return renderApp(req, res, "ide", {
+      code: program.description,
+      language: program.language,
+      stdin: program.input,
+      program: { id: program.id, name: program.name },
+    }, { title: `${program.name} · OnlineIDE` });
   } catch (err) {
     res.redirect("/");
   }

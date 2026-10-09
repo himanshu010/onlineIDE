@@ -5,6 +5,7 @@ const randomize = require("randomatic");
 
 const Unverified = require("../../../db/models/Unverified");
 const User = require("../../../db/models/User");
+const renderApp = require("../../utils/renderApp");
 
 router.post("/resend", async (req, res) => {
   const { email, msg } = req.body;
@@ -21,7 +22,7 @@ router.post("/resend", async (req, res) => {
       const subject = "[OnlineIde] Otp for registration is : " + otp;
       const text = "Your OTP for registeration is " + otp;
       sendMail(email, subject, text);
-      return res.render("verify", { email, msg, type: "signup" });
+      return renderApp(req, res, "verify", { email, msg, type: "signup" });
     } else {
       let user = await User.findOne({ email });
       if (!user) {
@@ -34,7 +35,7 @@ router.post("/resend", async (req, res) => {
         unVerUser.otp;
 
       sendMail(email, subject, text);
-      return res.render("verify", {
+      return renderApp(req, res, "verify", {
         email,
         msg,
         type: "forgot-password",

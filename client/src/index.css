@@ -1,0 +1,222 @@
+@import "tailwindcss";
+@import "@fontsource/ibm-plex-sans/latin-400.css";
+@import "@fontsource/ibm-plex-sans/latin-500.css";
+@import "@fontsource/ibm-plex-sans/latin-600.css";
+@import "@fontsource-variable/jetbrains-mono/wght.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Dark (OLED) is the default; `html.dark` is removed for the light theme. Text colours keep 4.5:1 on
+   --bg, --bg-1 and --bg-2 in both themes, and --input-border 3:1 on --bg-1 and --bg-2. */
+:root {
+  --bg: #fafafa;
+  --bg-1: #ffffff;
+  --bg-2: #f4f4f5;
+  --bg-3: #e9e9ec;
+  --fg: #09090b;
+  --fg-muted: #52525b;
+  --fg-faint: #63636c;
+  --line: rgb(9 9 11 / 0.09);
+  --line-strong: rgb(9 9 11 / 0.18);
+  --input-border: #85858f;
+  --run: #15803d;
+  --run-hover: #166534;
+  --run-fg: #ffffff;
+  --focus: #2563eb;
+  --link: #1d4ed8;
+  --danger: #b91c1c;
+  --danger-bg: rgb(185 28 28 / 0.08);
+  --success: #15803d;
+  --warn: #854d0e;
+  --glow-a: #3b82f6;
+  --glow-b: #8b5cf6;
+  --glow-c: #22c55e;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #050506;
+  --bg-1: #0b0b0e;
+  --bg-2: #121217;
+  --bg-3: #1b1b22;
+  --fg: #f4f4f5;
+  --fg-muted: #a1a1aa;
+  --fg-faint: #8b8b95;
+  --line: rgb(255 255 255 / 0.08);
+  --line-strong: rgb(255 255 255 / 0.16);
+  --input-border: #62626c;
+  --run: #22c55e;
+  --run-hover: #4ade80;
+  --run-fg: #03170a;
+  --focus: #60a5fa;
+  --link: #93c5fd;
+  --danger: #f87171;
+  --danger-bg: rgb(248 113 113 / 0.1);
+  --success: #4ade80;
+  --warn: #fbbf24;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-1: var(--bg-1);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-input-border: var(--input-border);
+  /* shadcn names the Magic UI components use. */
+  --color-border: var(--line-strong);
+  --color-background: var(--bg-1);
+  --color-run: var(--run);
+  --color-run-hover: var(--run-hover);
+  --color-run-fg: var(--run-fg);
+  --color-focus: var(--focus);
+  --color-link: var(--link);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-success: var(--success);
+  --color-warn: var(--warn);
+  --color-glow-a: var(--glow-a);
+  --color-glow-b: var(--glow-b);
+  --color-glow-c: var(--glow-c);
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  --animate-shiny-text: shiny-text 8s infinite;
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+  @keyframes shimmer-slide {
+    to {
+      transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes spin-around {
+    0% {
+      transform: translateZ(0) rotate(0);
+    }
+    15%,
+    35% {
+      transform: translateZ(0) rotate(90deg);
+    }
+    65%,
+    85% {
+      transform: translateZ(0) rotate(270deg);
+    }
+    100% {
+      transform: translateZ(0) rotate(360deg);
+    }
+  }
+  @keyframes shiny-text {
+    0%,
+    90%,
+    100% {
+      background-position: calc(-100% - var(--shiny-width)) 0;
+    }
+    30%,
+    60% {
+      background-position: calc(100% + var(--shiny-width)) 0;
+    }
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    min-height: 100dvh;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  label[for] {
+    cursor: pointer;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--focus) 35%, transparent);
+  }
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+@utility link {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--link) 40%, transparent);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 150ms;
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Page shell before React mounts: the background only, so nothing flashes white in dark mode. */
+.boot {
+  min-height: 100dvh;
+}
+
+/* The theme toggle's circular reveal (Magic UI animated-theme-toggler). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

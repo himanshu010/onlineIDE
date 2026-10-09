@@ -1,101 +1,67 @@
 const express = require("express");
 const output = require("../../utils/output");
 const jwt = require("jsonwebtoken");
+const renderApp = require("../../utils/renderApp");
 
 const User = require("../../../db/models/User");
 const Program = require("../../../db/models/Program");
 
 const router = express.Router();
-const port = process.env.PORT || 3000;
+
+async function currentUser(req) {
+  const logToken = req.cookies["logToken"];
+  if (!logToken) return null;
+  try {
+    const decoded = jwt.verify(logToken, process.env.JWTSECRET);
+    return { id: decoded.user.id, doc: await User.findById(decoded.user.id).select("-password") };
+  } catch (err) {
+    return null;
+  }
+}
 
 router.get("/", async (req, res) => {
-  let pic;
-  const showRunButtons = true;
-  let isLogin = false;
-  try {
-    const logToken = req.cookies["logToken"];
-    const decoded = jwt.verify(logToken, process.env.JWTSECRET);
-    const user = await User.findById(decoded.user.id).select("-password");
-
-    if (user.photo.data)
-      pic = new Buffer.from(user.photo.data).toString("base64");
-    if (user) {
-      isLogin = true;
-    }
-    res.render("index", { isLogin, pic, showRunButtons, user });
-  } catch (err) {
-    console.error(err);
-    return res.render("index", { showRunButtons });
-  }
+  const user = await currentUser(req);
+  return renderApp(req, res, "ide", {}, { user: user && user.doc });
 });
 
+// The page posts here only without JavaScript (the client runs code through /api/run); kept so old
+// links and form posts still work.
 router.post("/", async (req, res) => {
-  let pic;
-  let decoded;
-  let isLogin = false;
-
-  var parentURL =
-    req.protocol + "://" + req.hostname + (port != 3000 ? "" : ":" + port);
   try {
-    const logToken = req.cookies["logToken"];
-    let user;
-    if (logToken) {
-      decoded = jwt.verify(logToken, process.env.JWTSECRET);
-      user = await User.findById(decoded.user.id).select("-password");
-
-      if (user.photo.data)
-        pic = new Buffer.from(user.photo.data).toString("base64");
-    }
-    if (user) {
-      isLogin = true;
-    }
+    const user = await currentUser(req);
     const isSave = req.body.isSave;
     if (isSave) {
       if (!user) {
         return res.redirect("/user/signup");
       }
-      const newProgram = new Program({
+      await new Program({
         description: req.body.description,
         name: req.body.name,
         input: req.body.input,
-        user: decoded.user.id,
+        user: user.id,
         language: req.body["select-language"],
-      });
-      await newProgram.save();
+      }).save();
     }
-    const result = await output(
-      req.body.description,
-      req.body["select-language"],
-      req.body.input
+    const result = await output(req.body.description, req.body["select-language"], req.body.input);
+    const body = result.body || {};
+    return renderApp(
+      req,
+      res,
+      "ide",
+      {
+        code: req.body.description,
+        language: req.body["select-language"],
+        stdin: req.body.input,
+        stdout: body.output,
+        cpuTime: body.cpuTime == null ? null : String(body.cpuTime),
+        memory: body.memory == null ? null : String(body.memory),
+        isError: body.memory == null && body.cpuTime == null,
+        saved: Boolean(isSave),
+      },
+      { user: user && user.doc }
     );
-    var isError = false;
-    if (result.body.memory == null && result.body.cpuTime == null) {
-      isError = true;
-    }
-    const showRunButtons = true;
-    res.render("index", {
-      description: req.body.description,
-      theme: req.body["select-theme"],
-      lang: req.body["select-language"],
-      stdin: req.body.input,
-      stdout: result.body.output,
-      msg: "Compiled",
-      isSave,
-      time: result.body.cpuTime,
-      memory: result.body.memory,
-      isError,
-      parentURL: parentURL,
-      postUrl: "/",
-      isLogin,
-      pic,
-      showRunButtons,
-      user,
-    });
   } catch (error) {
-    return res.render("error", {
-      error: error.code,
-      errno: error.errno,
-    });
+    return renderApp(req, res, "error", { error: error.code, errno: error.errno });
   }
 });
 

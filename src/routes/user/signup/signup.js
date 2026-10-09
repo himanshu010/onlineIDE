@@ -3,10 +3,11 @@ const router = express.Router();
 
 const Unverified = require("../../../../db/models/Unverified");
 const { signOtpToken } = require("../../../utils/otpToken");
+const renderApp = require("../../../utils/renderApp");
 
 router.get("/", async (req, res) => {
   const msg = req.query.msg;
-  res.render("signUp", { msg });
+  renderApp(req, res, "signup", { msg });
 });
 
 router.post("/check", async (req, res) => {
@@ -28,7 +29,7 @@ router.post("/check", async (req, res) => {
     // Every check uses up the code, right or wrong, so it cannot be guessed by retrying.
     unVerUser.otp = undefined;
     await unVerUser.save();
-    res.render("afterOtp", {
+    renderApp(req, res, "afterOtp", {
       email,
       isCorrect,
       forgotPassword,

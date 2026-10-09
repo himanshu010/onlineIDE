@@ -3,6 +3,7 @@ const express = require("express");
 const axios = require("axios");
 
 const { authCookie, safeReturnPath } = require("../../utils/cookies");
+const renderApp = require("../../utils/renderApp");
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ router.get("/oauth-callback", (req, res) => {
   res.clearCookie("oauthState");
   res.clearCookie("oauthReturn");
   if (!expectedState || req.query.state !== expectedState) {
-    return res.render("error", { error: "GitHub sign-in expired. Please try again." });
+    return renderApp(req, res, "error", { error: "GitHub sign-in expired. Please try again." });
   }
   const body = {
     client_id: clientId,
@@ -47,7 +48,7 @@ router.get("/oauth-callback", (req, res) => {
       res.cookie("auth", token, authCookie(req));
       return res.redirect(returnTo);
     })
-    .catch((err) => res.render("error", { error: err.message }));
+    .catch((err) => renderApp(req, res, "error", { error: err.message }));
 });
 
 module.exports = router;
