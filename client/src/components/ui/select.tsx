@@ -8,7 +8,7 @@ export function Select({ className, children, ...props }: ComponentProps<"select
   return (
     <div className={cn("relative", className)}>
       <select
-        className="h-9 w-full cursor-pointer appearance-none rounded-lg border border-line-strong bg-bg-1 pr-8 pl-3 text-sm text-fg transition-colors hover:border-input-border focus-visible:border-focus"
+        className="h-9 w-full cursor-pointer appearance-none rounded-lg border border-line-strong bg-bg-1 pr-8 pl-3 text-sm text-fg pointer-coarse:h-11 pointer-coarse:text-base transition-colors hover:border-input-border focus-visible:border-focus"
         {...props}
       >
         {children}

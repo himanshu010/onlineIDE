@@ -22,7 +22,7 @@ export function Navbar({ active, session }: { active?: string; session: Session 
       transition={{ duration: 0.5, ease: ease.out }}
     >
       <nav aria-label="Main" className="flex h-14 items-center justify-between gap-3 rounded-2xl border border-line bg-bg-1/75 pr-2 pl-3 shadow-lg shadow-black/5 backdrop-blur-xl">
-        <Logo />
+        <Logo className="max-[25rem]:[&>span]:hidden" />
         <div className="hidden items-center md:flex">
           <AnimatedBackground className="rounded-lg bg-bg-3" enableHover transition={{ type: "spring", bounce: 0.15, duration: 0.35 }}>
             {links.map((link) => (
@@ -39,7 +39,7 @@ export function Navbar({ active, session }: { active?: string; session: Session 
           </AnimatedBackground>
         </div>
         <div className="flex items-center gap-1">
-          <a className="rounded-lg px-3 py-2 text-sm text-fg-muted transition-colors hover:text-fg md:hidden" href={active === "/github" ? "/" : "/github"}>
+          <a className="rounded-lg px-3 py-2 text-sm text-fg-muted transition-colors hover:text-fg pointer-coarse:py-3 md:hidden" href={active === "/github" ? "/" : "/github"}>
             {active === "/github" ? "IDE" : "GitHub"}
           </a>
           <ThemeToggle />

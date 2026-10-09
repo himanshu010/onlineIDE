@@ -82,7 +82,7 @@ Settings come from the environment, or from `config/dev.env` (not committed):
 | `CLIENT_G_ID`, `CLIENT_G_SECRET` | GitHub OAuth app (signing in to GitHub's Compiler) |
 | `SENDGRID_API_KEY`, `SENDERMAIL` | Sign-up and password-reset codes |
 | `PORT`, `HOST` | Where the server listens (default port 3000, every interface) |
-| `JDOODLE_URL`, `GITHUB_API_URL` | Test stand-ins for JDoodle and GitHub's API; leave unset in production |
+| `JDOODLE_URL`, `GITHUB_API_URL`, `SENDGRID_API_URL` | Test stand-ins for JDoodle, GitHub's API and SendGrid; leave unset in production |
 
 <h2 align="center">Deploying</h2>
 

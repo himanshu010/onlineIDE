@@ -38,6 +38,8 @@ const store = (key: string, value: string) => {
   }
 };
 const draftKey = (id: LanguageId) => `oide-draft-${id}`;
+// Phones and tablets start at 16 px: iOS zooms the page in when text under 16 px gets focus.
+const coarsePointer = () => window.matchMedia("(pointer: coarse)").matches;
 
 type Tab = "code" | "input" | "output";
 
@@ -52,7 +54,7 @@ export default function Ide({ code, cpuTime, github, isError, isJava, language, 
     stdout !== undefined && stdout !== null ? { status: "done", output: stdout, cpuTime: cpuTime ?? null, memory: memory ?? null, isError: Boolean(isError) } : { status: "idle" },
   );
   const [editorTheme, setEditorTheme] = useState<EditorThemeId>(() => (editorThemes.find((theme) => theme.id === stored("oide-editor-theme"))?.id ?? "auto"));
-  const [fontSize, setFontSize] = useState(() => Math.min(22, Math.max(11, Number(stored("oide-font-size")) || 14)));
+  const [fontSize, setFontSize] = useState(() => Math.min(22, Math.max(11, Number(stored("oide-font-size")) || (coarsePointer() ? 16 : 14))));
   const [cursor, setCursor] = useState({ line: 1, column: 1 });
   const [saveOpen, setSaveOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("code");
@@ -186,7 +188,7 @@ export default function Ide({ code, cpuTime, github, isError, isJava, language, 
       </header>
       <TextArea
         aria-labelledby="input-title"
-        className="min-h-0 flex-1 resize-none rounded-none border-0 bg-transparent font-mono text-[0.8125rem] leading-relaxed hover:border-0 focus-visible:shadow-none"
+        className="min-h-0 flex-1 resize-none rounded-none border-0 bg-transparent font-mono text-[0.8125rem] leading-relaxed hover:border-0 focus-visible:shadow-none pointer-coarse:text-base"
         onChange={(event) => setInput(event.target.value)}
         placeholder="Anything your program reads from standard input goes here."
         spellCheck={false}
@@ -315,7 +317,7 @@ export default function Ide({ code, cpuTime, github, isError, isJava, language, 
         )}
       </main>
 
-      <footer className="flex h-8 shrink-0 items-center justify-between gap-4 border-t bg-bg-1 px-3 font-mono text-[0.6875rem] text-fg-faint">
+      <footer className="flex h-8 shrink-0 items-center justify-between gap-4 border-t bg-bg-1 px-3 font-mono text-xs text-fg-faint pointer-coarse:h-11">
         <div className="flex min-w-0 items-center gap-4">
           {github ? (
             <span className="flex min-w-0 items-center gap-1.5">
@@ -331,18 +333,23 @@ export default function Ide({ code, cpuTime, github, isError, isJava, language, 
           <span className="hidden sm:inline">
             Ln {cursor.line}, Col {cursor.column}
           </span>
-          {isJava ? <span className="hidden text-warn md:inline">Class should be "main"</span> : null}
-          {github && runnable === false ? <span className="hidden text-warn md:inline">This file type can’t run here</span> : null}
+          {isJava ? <span className="shrink-0 text-warn">Class should be "main"</span> : null}
+          {github && runnable === false ? (
+            <span className="shrink-0 text-warn">
+              <span className="md:hidden">Can’t run here</span>
+              <span className="hidden md:inline">This file type can’t run here</span>
+            </span>
+          ) : null}
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          <span className="hidden items-center gap-1 md:flex">
+          <span className="hidden items-center gap-1 md:flex pointer-coarse:hidden">
             <Kbd>{modKey}</Kbd>
             <Kbd>Enter</Kbd> run
           </span>
           <span className="flex items-center gap-1">
             <button
               aria-label="Smaller text"
-              className="grid size-6 place-items-center rounded hover:bg-bg-2 hover:text-fg"
+              className="grid size-6 place-items-center rounded hover:bg-bg-2 hover:text-fg pointer-coarse:size-11"
               onClick={() => setFontSize((size) => (store("oide-font-size", String(Math.max(11, size - 1))), Math.max(11, size - 1)))}
               type="button"
             >
@@ -351,7 +358,7 @@ export default function Ide({ code, cpuTime, github, isError, isJava, language, 
             <span aria-live="polite">{fontSize}px</span>
             <button
               aria-label="Larger text"
-              className="grid size-6 place-items-center rounded hover:bg-bg-2 hover:text-fg"
+              className="grid size-6 place-items-center rounded hover:bg-bg-2 hover:text-fg pointer-coarse:size-11"
               onClick={() => setFontSize((size) => (store("oide-font-size", String(Math.min(22, size + 1))), Math.min(22, size + 1)))}
               type="button"
             >

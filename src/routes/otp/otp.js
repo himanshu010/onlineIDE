@@ -9,40 +9,22 @@ const renderApp = require("../../utils/renderApp");
 
 router.post("/resend", async (req, res) => {
   const { email, msg } = req.body;
-  let signup = false;
-  if (req.body.signup) {
-    signup = true;
-  }
+  const type = req.body.signup ? "signup" : "forgot-password";
+  const start = type === "signup" ? "/user/signup" : "/user/forgot-password";
   try {
-    let unVerUser = await Unverified.findOne({ email });
+    const unVerUser = await Unverified.findOne({ email });
+    if (!unVerUser) return res.redirect(start);
+    if (type === "forgot-password" && !(await User.findOne({ email }))) return res.redirect("/user/signup");
+
     const otp = randomize("0", 4);
     unVerUser.otp = otp;
     await unVerUser.save();
-    if (signup) {
-      const subject = "[OnlineIde] Otp for registration is : " + otp;
-      const text = "Your OTP for registeration is " + otp;
-      sendMail(email, subject, text);
-      return renderApp(req, res, "verify", { email, msg, type: "signup" });
-    } else {
-      let user = await User.findOne({ email });
-      if (!user) {
-        return res.redirect("/user/signup");
-      }
-      const subject =
-        "[OnlineIde] Your otp to change your password is : " + unVerUser.otp;
-      const text =
-        'A "forgot password" request has been initiated by your account. Your OTP  is ' +
-        unVerUser.otp;
-
-      sendMail(email, subject, text);
-      return renderApp(req, res, "verify", {
-        email,
-        msg,
-        type: "forgot-password",
-      });
+    if (!(await sendMail.code(email, otp, type))) {
+      return renderApp(req, res, "verify", { email, msg: sendMail.failedMessage, type });
     }
+    return renderApp(req, res, "verify", { email, msg, type });
   } catch (err) {
-    return res.redirect("/user/signup");
+    return res.redirect(start);
   }
 });
 

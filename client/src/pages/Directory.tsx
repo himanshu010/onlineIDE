@@ -60,7 +60,7 @@ export default function Directory({ avatar, entries, path, repo, session, userna
         <nav aria-label="Folder path" className="mt-8">
           <ol className="flex flex-wrap items-center gap-1 font-mono text-sm">
             <li>
-              <a className={cn("rounded-md px-1.5 py-1 transition-colors hover:bg-bg-2", segments.length ? "text-fg-muted" : "text-fg")} href={base} aria-current={segments.length ? undefined : "page"}>
+              <a className={cn("rounded-md px-1.5 py-1 transition-colors hover:bg-bg-2 pointer-coarse:inline-block pointer-coarse:py-3", segments.length ? "text-fg-muted" : "text-fg")} href={base} aria-current={segments.length ? undefined : "page"}>
                 {repo}
               </a>
             </li>
@@ -69,7 +69,7 @@ export default function Directory({ avatar, entries, path, repo, session, userna
                 <ChevronRight aria-hidden className="size-3.5 text-fg-faint" />
                 <a
                   aria-current={index === segments.length - 1 ? "page" : undefined}
-                  className={cn("rounded-md px-1.5 py-1 transition-colors hover:bg-bg-2", index === segments.length - 1 ? "text-fg" : "text-fg-muted")}
+                  className={cn("rounded-md px-1.5 py-1 transition-colors hover:bg-bg-2 pointer-coarse:inline-block pointer-coarse:py-3", index === segments.length - 1 ? "text-fg" : "text-fg-muted")}
                   href={`${base}/${segments.slice(0, index + 1).join("/")}`}
                 >
                   {segment}
@@ -86,7 +86,7 @@ export default function Directory({ avatar, entries, path, repo, session, userna
             </label>
             <div className="relative">
               <Search aria-hidden className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-fg-faint" />
-              <input className={cn(inputClass, "h-10 pl-9 text-sm")} id="filter" onChange={(event) => setQuery(event.target.value)} placeholder="Filter files" type="search" value={query} />
+              <input className={cn(inputClass, "h-10 pl-9 text-sm pointer-coarse:h-11 pointer-coarse:text-base")} id="filter" onChange={(event) => setQuery(event.target.value)} placeholder="Filter files" type="search" value={query} />
             </div>
           </div>
           <motion.ul animate="show" initial="hidden" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.025 } } }}>

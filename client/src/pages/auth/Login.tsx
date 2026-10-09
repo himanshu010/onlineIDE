@@ -25,7 +25,7 @@ export default function Login({ msg }: MessageProps & PageProps) {
         <Field autoComplete="email" inputMode="email" label="Email" name="email" placeholder="you@example.com" required type="email" />
         <div>
           <PasswordField autoComplete="current-password" label="Password" name="password" required />
-          <a className="link mt-2 inline-block text-sm" href="/user/forgot-password">
+          <a className="link mt-2 inline-block text-sm pointer-coarse:mt-0 pointer-coarse:py-3" href="/user/forgot-password">
             Forgot your password?
           </a>
         </div>

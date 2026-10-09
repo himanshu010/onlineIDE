@@ -14,10 +14,10 @@ const variants = {
 };
 
 const sizes = {
-  sm: "h-9 px-3 text-sm",
+  sm: "h-9 px-3 text-sm pointer-coarse:h-11 pointer-coarse:min-w-11",
   md: "h-11 px-4 text-[0.9375rem]",
   lg: "h-12 px-6 text-base",
-  icon: "size-10",
+  icon: "size-10 pointer-coarse:size-11",
 };
 
 export type ButtonStyle = { variant?: keyof typeof variants; size?: keyof typeof sizes };

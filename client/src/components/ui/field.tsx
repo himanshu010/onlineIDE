@@ -17,7 +17,7 @@ export function Field({ className, error, hint, label, trailing, ...props }: Fie
         {label}
       </label>
       <div className="relative">
-        <input aria-describedby={describedBy} aria-invalid={error ? true : undefined} className={cn(inputClass, trailing && "pr-11")} id={id} {...props} />
+        <input aria-describedby={describedBy} aria-invalid={error ? true : undefined} className={cn(inputClass, trailing && "pr-11 pointer-coarse:pr-12")} id={id} {...props} />
         {trailing ? <div className="absolute inset-y-0 right-1 flex items-center">{trailing}</div> : null}
       </div>
       {error ? (
@@ -42,7 +42,7 @@ export function PasswordField(props: Omit<FieldProps, "type" | "trailing">) {
         <button
           aria-label={visible ? "Hide password" : "Show password"}
           aria-pressed={visible}
-          className="grid size-9 place-items-center rounded-md text-fg-faint transition-colors hover:bg-bg-2 hover:text-fg"
+          className="grid size-9 place-items-center rounded-md text-fg-faint pointer-coarse:size-11 transition-colors hover:bg-bg-2 hover:text-fg"
           onClick={() => setVisible((value) => !value)}
           type="button"
         >

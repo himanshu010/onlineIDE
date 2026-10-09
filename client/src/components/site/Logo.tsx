@@ -13,7 +13,7 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Logo({ className, href = "/" }: { className?: string; href?: string }) {
   return (
-    <a aria-label="OnlineIDE" className={cn("inline-flex items-center gap-2.5 rounded-lg font-mono text-[0.9375rem] font-semibold tracking-tight text-fg", className)} href={href}>
+    <a aria-label="OnlineIDE" className={cn("inline-flex items-center gap-2.5 rounded-lg font-mono pointer-coarse:min-h-11 pointer-coarse:min-w-11 pointer-coarse:justify-center text-[0.9375rem] font-semibold tracking-tight text-fg", className)} href={href}>
       <LogoMark />
       <span>
         Online<span className="text-run">IDE</span>

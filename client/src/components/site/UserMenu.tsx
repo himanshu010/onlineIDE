@@ -16,7 +16,7 @@ export function UserMenu({ compact, session }: { compact?: boolean; session: Ses
           ]}
           label="Account"
           trigger={<User aria-hidden className="size-[18px]" />}
-          triggerClassName="grid size-10 place-items-center rounded-lg text-fg-muted transition-colors hover:bg-bg-2 hover:text-fg"
+          triggerClassName="grid size-10 place-items-center pointer-coarse:size-11 rounded-lg text-fg-muted transition-colors hover:bg-bg-2 hover:text-fg"
         />
       );
     }
@@ -45,7 +45,7 @@ export function UserMenu({ compact, session }: { compact?: boolean; session: Ses
           {compact ? null : <span className="hidden max-w-32 truncate text-sm text-fg-muted lg:inline">{session.firstName}</span>}
         </>
       }
-      triggerClassName="flex h-10 items-center gap-2 rounded-full pr-1 pl-1 transition-colors hover:bg-bg-2 lg:pr-3"
+      triggerClassName="flex h-10 items-center gap-2 rounded-full pointer-coarse:h-11 pointer-coarse:min-w-11 pr-1 pl-1 transition-colors hover:bg-bg-2 lg:pr-3"
     />
   );
 }

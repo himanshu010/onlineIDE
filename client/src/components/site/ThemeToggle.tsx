@@ -5,7 +5,7 @@ import { useReducedMotionSafe } from "@/lib/motion";
 import { setTheme, useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
-const buttonClass = "grid size-10 place-items-center rounded-lg text-fg-muted transition-colors hover:bg-bg-2 hover:text-fg";
+const buttonClass = "grid size-10 place-items-center pointer-coarse:size-11 rounded-lg text-fg-muted transition-colors hover:bg-bg-2 hover:text-fg";
 
 // Magic UI's toggler reveals the new theme in a circle from the button; under reduced motion the
 // theme simply switches.

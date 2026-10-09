@@ -12,7 +12,7 @@ export function Footer() {
           </a>
         </span>
       </p>
-      <nav aria-label="Footer" className="flex items-center gap-5">
+      <nav aria-label="Footer" className="flex items-center gap-5 pointer-coarse:gap-1 pointer-coarse:[&>a]:px-3 pointer-coarse:[&>a]:py-3">
         <a className="transition-colors hover:text-fg" href="/">
           IDE
         </a>

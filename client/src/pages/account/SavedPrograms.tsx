@@ -17,7 +17,7 @@ function CopyLink({ program }: { program: SavedProgram }) {
   return (
     <button
       aria-label={copied ? "Link copied" : `Copy a link to ${program.name}`}
-      className="grid size-9 place-items-center rounded-lg text-fg-faint transition-colors hover:bg-bg-3 hover:text-fg"
+      className="grid size-9 place-items-center rounded-lg text-fg-faint pointer-coarse:size-11 transition-colors hover:bg-bg-3 hover:text-fg"
       onClick={async () => {
         await navigator.clipboard.writeText(`${location.origin}/program/${program.id}`);
         setCopied(true);
@@ -61,7 +61,7 @@ export default function SavedPrograms({ programs, session }: SavedProgramsProps 
               </label>
               <div className="relative">
                 <Search aria-hidden className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-fg-faint" />
-                <input className={cn(inputClass, "h-10 pl-9 text-sm")} id="filter" onChange={(event) => setQuery(event.target.value)} placeholder="Filter by name or language" type="search" value={query} />
+                <input className={cn(inputClass, "h-10 pl-9 text-sm pointer-coarse:h-11 pointer-coarse:text-base")} id="filter" onChange={(event) => setQuery(event.target.value)} placeholder="Filter by name or language" type="search" value={query} />
               </div>
             </div>
           ) : null}

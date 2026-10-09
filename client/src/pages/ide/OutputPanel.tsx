@@ -14,7 +14,7 @@ export type RunState =
   | { status: "done"; output: string; cpuTime: string | null; memory: string | null; isError: boolean }
   | { status: "failed"; message: string };
 
-const iconButton = "grid size-8 place-items-center rounded-md text-fg-faint transition-colors hover:bg-bg-2 hover:text-fg disabled:opacity-40";
+const iconButton = "grid size-8 place-items-center pointer-coarse:size-11 rounded-md text-fg-faint transition-colors hover:bg-bg-2 hover:text-fg disabled:opacity-40";
 
 function StatusChip({ state }: { state: RunState }) {
   const content =
@@ -113,7 +113,7 @@ export function OutputPanel({ onClear, state }: { onClear: () => void; state: Ru
               <div className="max-w-xs">
                 <Terminal aria-hidden className="mx-auto size-6 text-fg-faint" />
                 <p className="mt-3 text-sm text-fg-muted">Run your code to see its output here.</p>
-                <p className="mt-2 inline-flex items-center gap-1 text-xs whitespace-nowrap text-fg-faint">
+                <p className="mt-2 inline-flex items-center gap-1 text-xs whitespace-nowrap text-fg-faint pointer-coarse:hidden">
                   <Kbd>{modKey}</Kbd> <Kbd>Enter</Kbd> runs it
                 </p>
               </div>

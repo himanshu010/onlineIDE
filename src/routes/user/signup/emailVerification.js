@@ -9,99 +9,56 @@ const User = require("../../../../db/models/User");
 const Unverified = require("../../../../db/models/Unverified");
 const renderApp = require("../../../utils/renderApp");
 
+const withMsg = (path, msg) => `${path}/?msg=${encodeURIComponent(msg)}`;
+
+// Starts sign-up or a password reset: stores a new code for the email and sends it.
 router.post("/verify", async (req, res) => {
   const otp = randomize("0", 4);
-  let { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
-  const isSignUp = req.body.isSignUp;
-  const isForgotPassword = req.body.isForgotPassword;
-  try {
-    if (isSignUp) {
-      try {
-        let user = await User.findOne({ email }).select("-password");
-        let unVerUser = await Unverified.findOne({ email }).select("-password");
-        if (user) {
-          res.status(400);
-          res.redirect("/user/signup/?msg=User already exists");
-          return;
-        }
-        if (!unVerUser) {
-          unVerUser = new Unverified({
-            firstName,
-            lastName,
-            email,
-            password,
-            otp,
-          });
-          const salt = await bcrypt.genSalt(10);
-          unVerUser.password = await bcrypt.hash(password, salt);
-          unVerUser.save();
-        } else {
-          const salt = await bcrypt.genSalt(10);
-          password = await bcrypt.hash(password, salt);
-          await Unverified.findOneAndUpdate(
-            { email },
-            { firstName, lastName, password, otp },
-            {
-              new: true,
-            }
-          );
-        }
-        const subject =
-          "[OnlineIde] Otp for registration is : " + unVerUser.otp;
-        const text = "Your OTP for registeration is " + unVerUser.otp;
-        sendMail(unVerUser.email, subject, text);
-        renderApp(req, res, "verify", {
-          email: unVerUser.email,
-          msg: "OTP sent to your mail",
-          type: "signup",
-        });
-      } catch (err) {
-        res.redirect("/user/login");
+  if (req.body.isSignUp) {
+    try {
+      if (!email || !firstName || !lastName || typeof password !== "string" || password.length < 6) {
+        return res.redirect(withMsg("/user/signup", "Fill in every field; the password needs at least 6 characters."));
       }
-    } else if (isForgotPassword) {
-      try {
-        const email = req.body.email;
-        if (!email) {
-          return res.redirect("/user/login");
-        }
-        let user = await User.findOne({ email }).select("-password");
-        let unVerUser = await Unverified.findOne({ email }).select("-password");
-        if (!user) {
-          res.redirect("/user/login/?msg=User doesn't exists");
-        }
-
-        await Unverified.findOneAndUpdate(
-          { email },
-          { otp },
-          {
-            new: true,
-          }
-        );
-
-        const subject =
-          "[OnlineIde] Your otp to change your password is : " + unVerUser.otp;
-        const text =
-          'A "forgot password" request has been initiated by your account. Your OTP  is ' +
-          unVerUser.otp;
-
-        sendMail(unVerUser.email, subject, text);
-        renderApp(req, res, "verify", {
-          email: unVerUser.email,
-          msg: "OTP sent to your mail",
-          type: "forgot-password",
-        });
-      } catch (err) {
-        return res.redirect("/user/signup");
+      if (await User.findOne({ email })) {
+        return res.redirect(withMsg("/user/signup", "User already exists"));
       }
-    }
-  } catch (err) {
-    if (isSignUp) {
-      res.redirect("/user/signup");
-    } else if (isForgotPassword) {
-      res.redirect("/user/login");
+      const salt = await bcrypt.genSalt(10);
+      const hashed = await bcrypt.hash(password, salt);
+      await Unverified.findOneAndUpdate({ email }, { firstName, lastName, password: hashed, otp }, { upsert: true, setDefaultsOnInsert: true });
+      if (!(await sendMail.code(email, otp, "signup"))) {
+        return res.redirect(withMsg("/user/signup", sendMail.failedMessage));
+      }
+      return renderApp(req, res, "verify", { email, msg: "OTP sent to your mail", type: "signup" });
+    } catch (err) {
+      return res.redirect("/user/signup");
     }
   }
+
+  if (req.body.isForgotPassword) {
+    try {
+      if (!email) return res.redirect("/user/forgot-password");
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.redirect(withMsg("/user/forgot-password", "There's no account with that email."));
+      }
+      // The code lives on the pending record from sign-up; accounts without one get it recreated.
+      await Unverified.findOneAndUpdate(
+        { email },
+        { otp, $setOnInsert: { firstName: user.firstName, lastName: user.lastName, password: user.password } },
+        { upsert: true, setDefaultsOnInsert: true }
+      );
+      if (!(await sendMail.code(email, otp, "forgot-password"))) {
+        return res.redirect(withMsg("/user/forgot-password", sendMail.failedMessage));
+      }
+      return renderApp(req, res, "verify", { email, msg: "OTP sent to your mail", type: "forgot-password" });
+    } catch (err) {
+      return res.redirect("/user/forgot-password");
+    }
+  }
+
+  return res.redirect("/user/signup");
 });
 
 module.exports = router;
