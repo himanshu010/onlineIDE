@@ -4,14 +4,15 @@ import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode 
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-export type MenuItem = { label: string; href: string; icon?: ReactNode };
+// A link, or an action (onSelect) that closes the menu when chosen.
+export type MenuItem = { label: string; icon?: ReactNode } & ({ href: string; onSelect?: never } | { href?: never; onSelect: () => void });
 
 // A menu button (WAI-ARIA pattern): arrow keys move between items, Escape closes and returns focus.
 export function Menu({ align = "end", items, label, trigger, triggerClassName }: { align?: "start" | "end"; items: MenuItem[]; label: string; trigger: ReactNode; triggerClassName?: string }) {
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
-  const links = useRef<(HTMLAnchorElement | null)[]>([]);
+  const links = useRef<(HTMLAnchorElement | HTMLButtonElement | null)[]>([]);
   const id = useId();
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export function Menu({ align = "end", items, label, trigger, triggerClassName }:
             animate={{ opacity: 1, scale: 1, y: 0 }}
             aria-label={label}
             className={cn(
-              "absolute top-[calc(100%+0.5rem)] z-40 min-w-52 rounded-xl border border-line-strong bg-bg-1/95 p-1.5 shadow-2xl shadow-black/30 backdrop-blur-md",
+              "absolute top-[calc(100%+0.5rem)] z-40 min-w-52 rounded-xl border border-line-strong bg-bg-1 p-1.5 shadow-2xl shadow-black/30",
               align === "end" ? "right-0 origin-top-right" : "left-0 origin-top-left",
             )}
             exit={{ opacity: 0, scale: 0.96, y: -4, transition: { duration: 0.12 } }}
@@ -75,21 +76,35 @@ export function Menu({ align = "end", items, label, trigger, triggerClassName }:
             role="menu"
             transition={{ duration: 0.18, ease: ease.out }}
           >
-            {items.map((item, index) => (
-              <a
-                className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-sm text-fg-muted outline-none transition-colors hover:bg-bg-2 hover:text-fg focus-visible:bg-bg-2 focus-visible:text-fg"
-                href={item.href}
-                key={item.href}
-                ref={(element) => {
-                  links.current[index] = element;
-                }}
-                role="menuitem"
-                tabIndex={-1}
-              >
-                {item.icon}
-                {item.label}
-              </a>
-            ))}
+            {items.map((item, index) => {
+              const className = "flex h-10 w-full items-center gap-2.5 rounded-lg px-3 text-left text-sm text-fg-muted outline-none transition-colors hover:bg-bg-2 hover:text-fg focus-visible:bg-bg-2 focus-visible:text-fg pointer-coarse:h-11";
+              const ref = (element: HTMLAnchorElement | HTMLButtonElement | null) => {
+                links.current[index] = element;
+              };
+              return item.href ? (
+                <a className={className} href={item.href} key={item.label} ref={ref} role="menuitem" tabIndex={-1}>
+                  {item.icon}
+                  {item.label}
+                </a>
+              ) : (
+                <button
+                  className={className}
+                  key={item.label}
+                  onClick={() => {
+                    item.onSelect?.();
+                    setOpen(false);
+                    button.current?.focus();
+                  }}
+                  ref={ref}
+                  role="menuitem"
+                  tabIndex={-1}
+                  type="button"
+                >
+                  {item.icon}
+                  {item.label}
+                </button>
+              );
+            })}
           </motion.div>
         ) : null}
       </AnimatePresence>

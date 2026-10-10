@@ -206,7 +206,7 @@ export default function Ide({ code, cpuTime, github, isError, isJava, language, 
       </a>
       <motion.header
         animate={{ opacity: 1, y: 0 }}
-        className="flex h-14 shrink-0 items-center gap-2 border-b bg-bg-1/80 px-2 backdrop-blur-xl sm:gap-3 sm:px-3"
+        className="relative z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-bg-1/80 px-2 backdrop-blur-xl sm:gap-3 sm:px-3"
         initial={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.4, ease: ease.out }}
       >
